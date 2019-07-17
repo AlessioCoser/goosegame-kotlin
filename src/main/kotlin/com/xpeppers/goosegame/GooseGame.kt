@@ -20,7 +20,14 @@ class GooseGame {
     }
 
     private fun movePlayer(command: String): String {
-        return "Pippo rolls 4, 2. Pippo moves from Start to 6"
+        val elements = command.split(" ", ",")
+        val playerName = elements[1]
+        val diceOne = elements[2].toInt()
+        val diceTwo = elements[4].toInt()
+        val previousPosition = "Start"
+        val newPosition = diceOne + diceTwo
+
+        return "$playerName rolls $diceOne, $diceTwo. $playerName moves from $previousPosition to $newPosition"
     }
 
     private fun addPlayers(command: String): String {
