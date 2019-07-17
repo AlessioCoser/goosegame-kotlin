@@ -22,4 +22,14 @@ class GooseGameTest {
 
         assertThat(response, `is`("players: Pluto"))
     }
+
+    @Test
+    fun `add two players`() {
+        val game = GooseGame()
+
+        game.execute("add player Pluto")
+        val response = game.execute("add player Pippo")
+
+        assertThat(response, `is`("players: Pluto, Pippo"))
+    }
 }

@@ -9,7 +9,11 @@ fun main() {
 }
 
 class GooseGame {
+    private val players = mutableListOf<String>()
+
     fun execute(command: String): String {
-        return "players: " + command.substring(11)
+        players.add(command.substring(11))
+
+        return "players: " + players.joinToString(", ")
     }
 }
