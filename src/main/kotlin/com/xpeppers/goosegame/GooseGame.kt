@@ -8,6 +8,6 @@ fun main() {
 
 class GooseGame {
     fun execute(command: String): String {
-        return "players: Pippo"
+        return "players: " + command.substring(11)
     }
 }
