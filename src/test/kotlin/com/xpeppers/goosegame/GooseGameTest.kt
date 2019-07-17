@@ -2,22 +2,26 @@ package com.xpeppers.goosegame
 
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
+import org.junit.Before
 import org.junit.Test
 
 class GooseGameTest {
+    private lateinit var game: GooseGame
+
+    @Before
+    fun beforeEach() {
+        game = GooseGame()
+    }
+
     @Test
     fun `add first player`() {
-        val gooseGame = GooseGame()
-
-        val response = gooseGame.execute("add player Pippo")
+        val response = game.execute("add player Pippo")
 
         assertThat(response, `is`("players: Pippo"))
     }
 
     @Test
     fun `add a players with different name`() {
-        val game = GooseGame()
-
         val response = game.execute("add player Pluto")
 
         assertThat(response, `is`("players: Pluto"))
@@ -25,8 +29,6 @@ class GooseGameTest {
 
     @Test
     fun `add two players`() {
-        val game = GooseGame()
-
         game.execute("add player Pluto")
         val response = game.execute("add player Pippo")
 
@@ -35,8 +37,6 @@ class GooseGameTest {
 
     @Test
     fun `doesn't add a duplicated player`() {
-        val game = GooseGame()
-
         game.execute("add player Pippo")
         val response = game.execute("add player Pippo")
 
