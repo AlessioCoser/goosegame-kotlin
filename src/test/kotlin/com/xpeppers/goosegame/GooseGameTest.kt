@@ -42,4 +42,14 @@ class GooseGameTest {
 
         assertThat(response, `is`("Pippo: already existing player"))
     }
+
+    @Test
+    fun `move player`() {
+        game.execute("add player Pippo")
+        game.execute("add player Pluto")
+
+        val response = game.execute("move Pippo 4, 2")
+
+        assertThat(response, `is`("Pippo rolls 4, 2. Pippo moves from Start to 6"))
+    }
 }
