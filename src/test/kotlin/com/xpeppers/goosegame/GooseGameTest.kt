@@ -32,4 +32,14 @@ class GooseGameTest {
 
         assertThat(response, `is`("players: Pluto, Pippo"))
     }
+
+    @Test
+    fun `doesn't add a duplicated player`() {
+        val game = GooseGame()
+
+        game.execute("add player Pippo")
+        val response = game.execute("add player Pippo")
+
+        assertThat(response, `is`("Pippo: already existing player"))
+    }
 }

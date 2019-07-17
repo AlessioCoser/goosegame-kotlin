@@ -12,7 +12,13 @@ class GooseGame {
     private val players = mutableListOf<String>()
 
     fun execute(command: String): String {
-        players.add(command.substring(11))
+        val playerName = command.substring(11)
+
+        if (players.contains(playerName)) {
+            return "$playerName: already existing player"
+        }
+
+        players.add(playerName)
 
         return "players: " + players.joinToString(", ")
     }
