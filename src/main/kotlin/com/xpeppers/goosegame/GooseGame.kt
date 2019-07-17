@@ -1,9 +1,13 @@
 package com.xpeppers.goosegame
 
 fun main() {
-    while(true) {
+    while (true) {
         print(readLine()!!.toString() + "\n")
     }
 }
 
-class GooseGame
+class GooseGame {
+    fun execute(command: String): String {
+        return "players: Pippo"
+    }
+}
