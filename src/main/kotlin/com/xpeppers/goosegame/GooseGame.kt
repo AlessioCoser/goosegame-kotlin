@@ -10,6 +10,7 @@ fun main() {
 
 class GooseGame {
     private val players = mutableListOf<String>()
+    private val positions = mutableMapOf<String, Int>()
 
     fun execute(command: String): String {
         if (command.startsWith("move ")) {
@@ -24,10 +25,15 @@ class GooseGame {
         val playerName = elements[1]
         val diceOne = elements[2].toInt()
         val diceTwo = elements[4].toInt()
-        val previousPosition = "Start"
-        val newPosition = diceOne + diceTwo
 
-        return "$playerName rolls $diceOne, $diceTwo. $playerName moves from $previousPosition to $newPosition"
+        val previousPosition = positions[playerName]!!
+        val newPosition = previousPosition + diceOne + diceTwo
+
+        positions[playerName] = newPosition
+
+        return "$playerName rolls $diceOne, $diceTwo. " +
+                "$playerName moves from ${printPosition(previousPosition)}" +
+                " to ${printPosition(newPosition)}"
     }
 
     private fun addPlayers(command: String): String {
@@ -38,7 +44,10 @@ class GooseGame {
         }
 
         players.add(playerName)
+        positions.put(playerName, 0)
 
         return "players: " + players.joinToString(", ")
     }
+
+    private fun printPosition(position: Int) = if (position == 0) "Start" else position.toString()
 }

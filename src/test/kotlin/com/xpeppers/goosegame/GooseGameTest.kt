@@ -62,4 +62,15 @@ class GooseGameTest {
 
         assertThat(response, `is`("Pluto rolls 5, 6. Pluto moves from Start to 11"))
     }
+
+    @Test
+    fun `move player from another position`() {
+        game.execute("add player Pippo")
+        game.execute("add player Pluto")
+
+        game.execute("move Pluto 1, 1")
+        val response = game.execute("move Pluto 2, 3")
+
+        assertThat(response, `is`("Pluto rolls 2, 3. Pluto moves from 2 to 7"))
+    }
 }
