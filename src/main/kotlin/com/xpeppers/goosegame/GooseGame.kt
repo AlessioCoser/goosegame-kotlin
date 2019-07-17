@@ -1,8 +1,10 @@
 package com.xpeppers.goosegame
 
 fun main() {
+    val game = GooseGame()
+
     while (true) {
-        print(readLine()!!.toString() + "\n")
+        print(game.execute(readLine()!!.toString()) + "\n")
     }
 }
 
