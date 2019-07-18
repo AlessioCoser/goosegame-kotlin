@@ -66,6 +66,15 @@ class GooseGameTest {
         assertThat(response, `is`("Pluto rolls 2, 3. Pluto moves from 2 to 7"))
     }
 
+    @Test
+    fun `player wins`() {
+        val game = gameWith("Pippo", "Pluto")
+
+        val response = game.execute("move Pluto 60, 3")
+
+        assertThat(response, `is`("Pluto rolls 60, 3. Pluto moves from Start to 63. Pluto Wins!!"))
+    }
+
     private fun gameWith(vararg names: String): GooseGame {
         val game = GooseGame()
         names.forEach { name -> game.execute("add player $name") }
