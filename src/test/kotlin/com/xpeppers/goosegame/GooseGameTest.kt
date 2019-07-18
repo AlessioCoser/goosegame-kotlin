@@ -6,30 +6,24 @@ import org.junit.Before
 import org.junit.Test
 
 class GooseGameTest {
-    private lateinit var game: GooseGame
-
-    @Before
-    fun beforeEach() {
-        game = GooseGame()
-    }
-
     @Test
     fun `add first player`() {
-        val response = game.execute("add player Pippo")
+        val response = GooseGame().execute("add player Pippo")
 
         assertThat(response, `is`("players: Pippo"))
     }
 
     @Test
     fun `add a players with different name`() {
-        val response = game.execute("add player Pluto")
+        val response = GooseGame().execute("add player Pluto")
 
         assertThat(response, `is`("players: Pluto"))
     }
 
     @Test
     fun `add two players`() {
-        game.execute("add player Pluto")
+        val game = gameWith("Pluto")
+
         val response = game.execute("add player Pippo")
 
         assertThat(response, `is`("players: Pluto, Pippo"))
@@ -37,7 +31,8 @@ class GooseGameTest {
 
     @Test
     fun `doesn't add a duplicated player`() {
-        game.execute("add player Pippo")
+        val game = gameWith("Pippo")
+
         val response = game.execute("add player Pippo")
 
         assertThat(response, `is`("Pippo: already existing player"))
@@ -45,8 +40,7 @@ class GooseGameTest {
 
     @Test
     fun `move player`() {
-        game.execute("add player Pippo")
-        game.execute("add player Pluto")
+        val game = gameWith("Pippo")
 
         val response = game.execute("move Pippo 4, 2")
 
@@ -55,8 +49,7 @@ class GooseGameTest {
 
     @Test
     fun `move another player`() {
-        game.execute("add player Pippo")
-        game.execute("add player Pluto")
+        val game = gameWith("Pippo", "Pluto")
 
         val response = game.execute("move Pluto 5, 6")
 
@@ -65,12 +58,17 @@ class GooseGameTest {
 
     @Test
     fun `move player from another position`() {
-        game.execute("add player Pippo")
-        game.execute("add player Pluto")
+        val game = gameWith("Pippo", "Pluto")
 
         game.execute("move Pluto 1, 1")
         val response = game.execute("move Pluto 2, 3")
 
         assertThat(response, `is`("Pluto rolls 2, 3. Pluto moves from 2 to 7"))
+    }
+
+    private fun gameWith(vararg names: String): GooseGame {
+        val game = GooseGame()
+        names.forEach { name -> game.execute("add player $name") }
+        return game
     }
 }
