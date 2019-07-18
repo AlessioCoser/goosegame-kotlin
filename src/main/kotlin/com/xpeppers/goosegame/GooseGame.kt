@@ -9,8 +9,7 @@ fun main() {
 }
 
 class GooseGame {
-    private val players = mutableListOf<String>()
-    private val positions = mutableMapOf<String, Int>()
+    private val players = mutableListOf<Player>()
 
     fun execute(command: String): String {
         if (command.startsWith("move ")) {
@@ -22,32 +21,33 @@ class GooseGame {
 
     private fun movePlayer(command: String): String {
         val elements = command.split(" ", ",")
-        val playerName = elements[1]
+        val player = findPlayerBy(elements[1])
         val diceOne = elements[2].toInt()
         val diceTwo = elements[4].toInt()
 
-        val previousPosition = positions[playerName]!!
-        val newPosition = previousPosition + diceOne + diceTwo
+        val previousPosition = player.position()
+        player.updatePosition(previousPosition + diceOne + diceTwo)
 
-        positions[playerName] = newPosition
-
-        return "$playerName rolls $diceOne, $diceTwo. " +
-                "$playerName moves from ${printPosition(previousPosition)}" +
-                " to ${printPosition(newPosition)}"
+        return "${player.name()} rolls $diceOne, $diceTwo. " +
+                "${player.name()} moves from ${printPosition(previousPosition)}" +
+                " to ${player.position()}"
     }
 
     private fun addPlayers(command: String): String {
         val playerName = command.substring(11)
 
-        if (players.contains(playerName)) {
+        if (playerNames().contains(playerName)) {
             return "$playerName: already existing player"
         }
 
-        players.add(playerName)
-        positions.put(playerName, 0)
+        players.add(Player(playerName))
 
-        return "players: " + players.joinToString(", ")
+        return "players: " + playerNames().joinToString(", ")
     }
+
+    private fun findPlayerBy(name: String) = players.first { player -> player.name() == name }
+
+    private fun playerNames() = players.map(Player::name)
 
     private fun printPosition(position: Int) = if (position == 0) "Start" else position.toString()
 }
