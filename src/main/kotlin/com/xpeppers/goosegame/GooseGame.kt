@@ -25,12 +25,12 @@ class GooseGame {
         val diceOne = elements[2].toInt()
         val diceTwo = elements[4].toInt()
 
-        val previousPosition = player.position()
-        player.updatePosition(previousPosition + diceOne + diceTwo)
+        val previousPosition = player.position
+        player.position = previousPosition + diceOne + diceTwo
 
-        return "${player.name()} rolls $diceOne, $diceTwo. " +
-                "${player.name()} moves from ${printPosition(previousPosition)}" +
-                " to ${player.position()}"
+        return "${player.name} rolls $diceOne, $diceTwo. " +
+                "${player.name} moves from ${printPosition(previousPosition)}" +
+                " to ${player.position}"
     }
 
     private fun addPlayers(command: String): String {
@@ -45,7 +45,7 @@ class GooseGame {
         return "players: " + playerNames().joinToString(", ")
     }
 
-    private fun findPlayerBy(name: String) = players.first { player -> player.name() == name }
+    private fun findPlayerBy(name: String) = players.first { player -> player.name == name }
 
     private fun playerNames() = players.map(Player::name)
 
