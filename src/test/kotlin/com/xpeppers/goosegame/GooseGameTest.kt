@@ -1,5 +1,6 @@
 package com.xpeppers.goosegame
 
+import com.nhaarman.mockito_kotlin.reset
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
@@ -73,6 +74,15 @@ class GooseGameTest {
         val response = game.execute("move Pluto 60, 3")
 
         assertThat(response, `is`("Pluto rolls 60, 3. Pluto moves from Start to 63. Pluto Wins!!"))
+    }
+
+    @Test
+    fun `player bounces when get over space 63`() {
+        val game = gameWith("Pippo", "Pluto")
+
+        val response = game.execute("move Pippo 60, 5")
+
+        assertThat(response, `is`("Pippo rolls 60, 5. Pippo moves from Start to 63. Pippo bounces! Pippo returns to 61"))
     }
 
     private fun gameWith(vararg names: String): GooseGame {

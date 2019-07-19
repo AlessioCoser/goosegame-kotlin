@@ -29,7 +29,18 @@ class GooseGame {
         val previousPosition = player.position
         player.position = previousPosition + diceOne + diceTwo
 
-        return printMovePlayer(player, previousPosition, diceOne, diceTwo) + printPlayerWins(player, winSpace)
+        if (player.position > 63) {
+            player.position = 63 - (player.position - 63)
+            return printMovePlayer(player.name, diceOne, diceTwo, previousPosition, 63) +
+                    ". ${player.name} bounces! ${player.name} returns to ${player.position}"
+        }
+
+        if (player.position == winSpace) {
+            return printMovePlayer(player.name, diceOne, diceTwo, previousPosition, player.position) +
+                    ". ${player.name} Wins!!"
+        }
+
+        return printMovePlayer(player.name, diceOne, diceTwo, previousPosition, player.position)
     }
 
     private fun addPlayers(command: String): String {
@@ -52,18 +63,8 @@ class GooseGame {
 
     private fun playersNames() = players.map(Player::name)
 
-    private fun printPlayerWins(player: Player, winSpace: Int): String {
-        if (player.position == winSpace) {
-            return ". ${player.name} Wins!!"
-        }
-
-        return ""
-    }
-
-    private fun printMovePlayer(player: Player, previousPosition: Int, diceOne: Int, diceTwo: Int): String {
-        return "${player.name} rolls $diceOne, $diceTwo. " +
-                "${player.name} moves from ${printPosition(previousPosition)}" +
-                " to ${player.position}"
+    private fun printMovePlayer(name: String, diceOne: Int, diceTwo: Int, previousPosition: Int, newPosition: Int): String {
+        return "$name rolls $diceOne, $diceTwo. $name moves from ${printPosition(previousPosition)} to $newPosition"
     }
 
     private fun printPosition(position: Int) = if (position == 0) "Start" else position.toString()
