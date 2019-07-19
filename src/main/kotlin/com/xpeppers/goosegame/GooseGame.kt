@@ -27,9 +27,9 @@ class GooseGame(private val players: Players) {
         val previousPosition = player.position
         players.updatePosition(player, previousPosition + dice.sum)
 
-        if (player.position > 63) {
-            players.updatePosition(player, 63 - (player.position - 63))
-            return printMovePlayer(player.name, dice, previousPosition, 63) +
+        if (player.position > winSpace) {
+            players.updatePosition(player, winSpace - (player.position - winSpace))
+            return printMovePlayer(player.name, dice, previousPosition, winSpace) +
                     ". ${player.name} bounces! ${player.name} returns to ${player.position}"
         }
 
