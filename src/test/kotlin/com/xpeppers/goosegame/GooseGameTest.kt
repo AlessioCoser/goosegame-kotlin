@@ -1,22 +1,20 @@
 package com.xpeppers.goosegame
 
-import com.nhaarman.mockito_kotlin.reset
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
-import org.junit.Before
 import org.junit.Test
 
 class GooseGameTest {
     @Test
     fun `add first player`() {
-        val response = GooseGame().execute("add player Pippo")
+        val response = game().execute("add player Pippo")
 
         assertThat(response, `is`("players: Pippo"))
     }
 
     @Test
     fun `add a players with different name`() {
-        val response = GooseGame().execute("add player Pluto")
+        val response = game().execute("add player Pluto")
 
         assertThat(response, `is`("players: Pluto"))
     }
@@ -86,8 +84,10 @@ class GooseGameTest {
     }
 
     private fun gameWith(vararg names: String): GooseGame {
-        val game = GooseGame()
+        val game = game()
         names.forEach { name -> game.execute("add player $name") }
         return game
     }
+
+    private fun game() = GooseGame(Players())
 }
