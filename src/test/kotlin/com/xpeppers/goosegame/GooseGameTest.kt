@@ -4,26 +4,34 @@ import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
+import org.junit.Before
 import org.junit.Test
 
 class GooseGameTest {
+    private lateinit var game : GooseGame
+
+    @Before
+    fun before() {
+        game = GooseGame(Players())
+    }
+
     @Test
     fun `add first player`() {
-        val response = game(Players()).execute("add player Pippo")
+        val response = game.execute("add player Pippo")
 
         assertThat(response, `is`("players: Pippo"))
     }
 
     @Test
     fun `add a players with different name`() {
-        val response = game(Players()).execute("add player Pluto")
+        val response = game.execute("add player Pluto")
 
         assertThat(response, `is`("players: Pluto"))
     }
 
     @Test
     fun `add two players`() {
-        val game = gameWith("Pluto")
+        addPlayers("Pluto")
 
         val response = game.execute("add player Pippo")
 
@@ -32,7 +40,7 @@ class GooseGameTest {
 
     @Test
     fun `doesn't add a duplicated player`() {
-        val game = gameWith("Pippo")
+        addPlayers("Pippo")
 
         val response = game.execute("add player Pippo")
 
@@ -41,7 +49,7 @@ class GooseGameTest {
 
     @Test
     fun `move player`() {
-        val game = gameWith("Pippo")
+        addPlayers("Pippo")
 
         val response = game.execute("move Pippo 4, 2")
 
@@ -50,7 +58,7 @@ class GooseGameTest {
 
     @Test
     fun `move another player`() {
-        val game = gameWith("Pippo", "Pluto")
+        addPlayers("Pippo", "Pluto")
 
         val response = game.execute("move Pluto 5, 6")
 
@@ -59,7 +67,7 @@ class GooseGameTest {
 
     @Test
     fun `move player from another position`() {
-        val game = gameWith("Pippo", "Pluto")
+        addPlayers("Pippo", "Pluto")
 
         game.execute("move Pluto 1, 1")
         val response = game.execute("move Pluto 2, 3")
@@ -69,7 +77,7 @@ class GooseGameTest {
 
     @Test
     fun `player wins`() {
-        val game = gameWith("Pippo", "Pluto")
+        addPlayers("Pippo", "Pluto")
 
         val response = game.execute("move Pluto 60, 3")
 
@@ -78,7 +86,7 @@ class GooseGameTest {
 
     @Test
     fun `player bounces when get over space 63`() {
-        val game = gameWith("Pippo", "Pluto")
+        addPlayers("Pippo", "Pluto")
 
         val response = game.execute("move Pippo 60, 5")
 
@@ -99,11 +107,8 @@ class GooseGameTest {
         assertThat(response, `is`("Pippo rolls 1, 2. Pippo moves from Start to 3"))
     }
 
-    private fun gameWith(vararg names: String): GooseGame {
-        val game = game(Players())
+    private fun addPlayers(vararg names: String): GooseGame {
         names.forEach { name -> game.execute("add player $name") }
         return game
     }
-
-    private fun game(players: Players) = GooseGame(Players())
 }
