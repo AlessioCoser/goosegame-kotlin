@@ -9,8 +9,6 @@ fun main() {
 }
 
 class GooseGame(private val players: Players, private val diceRoller: DiceRoller) {
-    constructor(players: Players) : this(players, RealDiceRoller())
-
     private val winSpace = 63
 
     fun execute(command: String): String {
@@ -24,8 +22,7 @@ class GooseGame(private val players: Players, private val diceRoller: DiceRoller
     private fun movePlayer(command: String): String {
         val elements = command.split(" ", ",")
         val player = players.find(elements[1])
-
-        val dice = if (elements.size == 2) diceRoller.roll() else Dice(elements[2].toInt(), elements[4].toInt())
+        val dice = diceRoller.roll()
 
         val previousPosition = player.position
         players.updatePosition(player, previousPosition + dice.sum)
