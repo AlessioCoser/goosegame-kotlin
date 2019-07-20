@@ -53,7 +53,7 @@ class GooseGameTest {
     fun `move player`() {
         addPlayers("Pippo")
 
-        val response = moveCommand("Pippo", 4, 3)
+        val response = moveCommand("Pippo", Dice(4, 3))
 
         assertThat(response, `is`("Pippo rolls 4, 3. Pippo moves from Start to 7"))
     }
@@ -62,7 +62,7 @@ class GooseGameTest {
     fun `move another player`() {
         addPlayers("Pippo", "Pluto")
 
-        val response = moveCommand("Pluto", 5, 6)
+        val response = moveCommand("Pluto", Dice(5, 6))
 
         assertThat(response, `is`("Pluto rolls 5, 6. Pluto moves from Start to 11"))
     }
@@ -71,8 +71,7 @@ class GooseGameTest {
     fun `move player from another position`() {
         addPlayers("Pippo", "Pluto")
 
-        moveCommand("Pluto", 1, 1)
-        val response = moveCommand("Pluto", 2, 3)
+        val response = moveCommand("Pluto", Dice(1, 1), Dice(2, 3))
 
         assertThat(response, `is`("Pluto rolls 2, 3. Pluto moves from 2 to 7"))
     }
@@ -81,7 +80,7 @@ class GooseGameTest {
     fun `player wins`() {
         addPlayers("Pippo", "Pluto")
 
-        val response = moveCommand("Pluto", 60, 3)
+        val response = moveCommand("Pluto", Dice(60, 3))
 
         assertThat(response, `is`("Pluto rolls 60, 3. Pluto moves from Start to 63. Pluto Wins!!"))
     }
@@ -90,7 +89,7 @@ class GooseGameTest {
     fun `player bounces when get over space 63`() {
         addPlayers("Pippo", "Pluto")
 
-        val response = moveCommand("Pippo", 60, 5)
+        val response = moveCommand("Pippo", Dice(60, 5))
 
         assertThat(
             response,
@@ -102,7 +101,7 @@ class GooseGameTest {
     fun `game rolls dice autonomously`() {
         addPlayers("Pippo", "Pluto")
 
-        val response = moveCommand("Pippo", 1, 2)
+        val response = moveCommand("Pippo", Dice(1, 2))
 
         assertThat(response, `is`("Pippo rolls 1, 2. Pippo moves from Start to 3"))
     }
@@ -111,18 +110,29 @@ class GooseGameTest {
     fun `Space "6" is "The Bridge"`() {
         addPlayers("Pippo", "Pluto")
 
-        val response =  moveCommand("Pippo", 2, 4)
+        val response =  moveCommand("Pippo", Dice(2, 4))
 
         assertThat(response, `is`("Pippo rolls 2, 4. Pippo moves from Start to The Bridge. Pippo jumps to 12"))
     }
+
+    @Test
+    fun `player in space "The Bridge" moves to space 12`() {
+        addPlayers("Pippo", "Pluto")
+
+        val response = moveCommand("Pippo", Dice(2, 4), Dice(1, 1))
+
+        assertThat(response, `is`("Pippo rolls 1, 1. Pippo moves from 12 to 14"))
+    }
+
 
     private fun addPlayers(vararg names: String): GooseGame {
         names.forEach { name -> game.execute("add player $name") }
         return game
     }
 
-    private fun moveCommand(name: String, firstDice: Int, secondDice: Int): String {
-        whenever(diceRoller.roll()).thenReturn(Dice(firstDice, secondDice))
-        return game.execute("move $name")
+    private fun moveCommand(name: String, vararg dice: Dice): String {
+        whenever(diceRoller.roll()).thenReturn(dice.first(), *dice.drop(1).toTypedArray())
+
+        return dice.map { game.execute("move $name") }.last()
     }
 }

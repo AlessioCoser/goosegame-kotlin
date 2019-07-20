@@ -39,6 +39,7 @@ class GooseGame(private val players: Players, private val diceRoller: DiceRoller
         }
 
         if (player.position == 6) {
+            players.updatePosition(player, 12)
             return printMovePlayer(player.name, dice, previousPosition, 6) +
                     ". ${player.name} jumps to 12"
         }
