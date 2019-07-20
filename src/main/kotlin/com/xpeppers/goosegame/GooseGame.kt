@@ -38,6 +38,11 @@ class GooseGame(private val players: Players, private val diceRoller: DiceRoller
                     ". ${player.name} Wins!!"
         }
 
+        if (player.position == 6) {
+            return printMovePlayer(player.name, dice, previousPosition, 6) +
+                    ". ${player.name} jumps to 12"
+        }
+
         return printMovePlayer(player.name, dice, previousPosition, player.position)
     }
 
@@ -54,8 +59,18 @@ class GooseGame(private val players: Players, private val diceRoller: DiceRoller
     }
 
     private fun printMovePlayer(name: String, dice: Dice, previousPosition: Int, newPosition: Int): String {
-        return "$name rolls ${dice.first}, ${dice.second}. $name moves from ${printPosition(previousPosition)} to $newPosition"
+        return "$name rolls ${dice.first}, ${dice.second}. $name moves from ${printPosition(previousPosition)} to ${printPosition(newPosition)}"
     }
 
-    private fun printPosition(position: Int) = if (position == 0) "Start" else position.toString()
+    private fun printPosition(position: Int): String {
+        if (position == 0) {
+            return "Start"
+        }
+
+        if (position == 6) {
+            return "The Bridge"
+        }
+
+        return position.toString()
+    }
 }

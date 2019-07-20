@@ -53,9 +53,9 @@ class GooseGameTest {
     fun `move player`() {
         addPlayers("Pippo")
 
-        val response = moveCommand("Pippo", 4, 2)
+        val response = moveCommand("Pippo", 4, 3)
 
-        assertThat(response, `is`("Pippo rolls 4, 2. Pippo moves from Start to 6"))
+        assertThat(response, `is`("Pippo rolls 4, 3. Pippo moves from Start to 7"))
     }
 
     @Test
@@ -105,6 +105,15 @@ class GooseGameTest {
         val response = moveCommand("Pippo", 1, 2)
 
         assertThat(response, `is`("Pippo rolls 1, 2. Pippo moves from Start to 3"))
+    }
+
+    @Test
+    fun `Space "6" is "The Bridge"`() {
+        addPlayers("Pippo", "Pluto")
+
+        val response =  moveCommand("Pippo", 2, 4)
+
+        assertThat(response, `is`("Pippo rolls 2, 4. Pippo moves from Start to The Bridge. Pippo jumps to 12"))
     }
 
     private fun addPlayers(vararg names: String): GooseGame {
