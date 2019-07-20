@@ -1,7 +1,7 @@
 package com.xpeppers.goosegame
 
 fun main() {
-    val game = GooseGame(Players())
+    val game = GooseGame(Players(), RealDiceRoller())
 
     while (true) {
         print(game.execute(readLine()!!.toString()) + "\n")
