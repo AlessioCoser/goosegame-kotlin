@@ -1,5 +1,7 @@
 package com.xpeppers.goosegame
 
+import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.whenever
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
@@ -7,14 +9,14 @@ import org.junit.Test
 class GooseGameTest {
     @Test
     fun `add first player`() {
-        val response = game().execute("add player Pippo")
+        val response = game(Players()).execute("add player Pippo")
 
         assertThat(response, `is`("players: Pippo"))
     }
 
     @Test
     fun `add a players with different name`() {
-        val response = game().execute("add player Pluto")
+        val response = game(Players()).execute("add player Pluto")
 
         assertThat(response, `is`("players: Pluto"))
     }
@@ -83,11 +85,25 @@ class GooseGameTest {
         assertThat(response, `is`("Pippo rolls 60, 5. Pippo moves from Start to 63. Pippo bounces! Pippo returns to 61"))
     }
 
+    @Test
+    fun `game rolls dice autonomously`() {
+        val diceRoller: DiceRoller = mock()
+        whenever(diceRoller.roll()).thenReturn(Dice(1, 2))
+
+        val game = GooseGame(Players(), diceRoller)
+        game.execute("add player Pippo")
+        game.execute("add player Pluto")
+
+        val response = game.execute("move Pippo")
+
+        assertThat(response, `is`("Pippo rolls 1, 2. Pippo moves from Start to 3"))
+    }
+
     private fun gameWith(vararg names: String): GooseGame {
-        val game = game()
+        val game = game(Players())
         names.forEach { name -> game.execute("add player $name") }
         return game
     }
 
-    private fun game() = GooseGame(Players())
+    private fun game(players: Players) = GooseGame(Players())
 }
