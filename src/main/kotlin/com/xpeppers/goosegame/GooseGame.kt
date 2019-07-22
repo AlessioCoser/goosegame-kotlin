@@ -44,43 +44,27 @@ class GooseGame(
 
         players.updatePosition(player, player.position + dice.sum)
 
-        if (isWinPolicy(player)) {
-            return winPolicy(player, dice)
+        val winPolicy = WinPolicy(printer)
+        val bouncePolicy = BouncePolicy(printer, players)
+        val bridgePolicy = BridgePolicy(printer, players)
+        val defaultPolicy = DefaultPolicy(printer)
+
+        if (winPolicy.canExecute(player)) {
+            return winPolicy.execute(player, dice)
         }
 
-        if (isBouncePolicy(player)) {
-            return bouncePolicy(player, dice)
+        if (bouncePolicy.canExecute(player)) {
+            return bouncePolicy.execute(player, dice)
         }
 
-        if (isBridgePolicy(player)) {
-            return bridgePolicy(player, dice)
+        if (bridgePolicy.canExecute(player)) {
+            return bridgePolicy.execute(player, dice)
         }
 
-        return defaultPolicy(player, dice)
+        if(defaultPolicy.canExecute(player)) {
+            return defaultPolicy.execute(player, dice)
+        }
+
+        return ""
     }
-
-    private fun isWinPolicy(player: Player) = player.position == winSpace
-
-    private fun winPolicy(player: Player, dice: Dice): String {
-        return printer.win(player, dice, player.previousPosition)
-    }
-
-    private fun isBridgePolicy(player: Player) = player.position == bridgeSpace
-
-    private fun bridgePolicy(player: Player, dice: Dice): String {
-        val previousPosition = player.previousPosition
-        players.updatePosition(player, 12)
-        return printer.bridge(player, dice, previousPosition, bridgeSpace)
-    }
-
-    private fun isBouncePolicy(player: Player) = player.position > winSpace
-
-    private fun bouncePolicy(player: Player, dice: Dice): String {
-        val previousPosition = player.previousPosition
-        players.updatePosition(player, winSpace - (player.position - winSpace))
-        return printer.bounce(player, dice, previousPosition, 63)
-    }
-
-    private fun defaultPolicy(player: Player, dice: Dice) =
-        printer.movePlayer(player.name, dice, player.previousPosition, player.position)
 }
