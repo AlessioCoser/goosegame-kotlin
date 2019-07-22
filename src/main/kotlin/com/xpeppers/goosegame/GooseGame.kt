@@ -8,7 +8,11 @@ fun main() {
     }
 }
 
-class GooseGame(private val players: Players, private val diceRoller: DiceRoller) {
+class GooseGame(
+    private val players: Players,
+    private val diceRoller: DiceRoller,
+    private val printer: Printer = Printer()
+) {
     private val winSpace = 63
 
     private val bridgeSpace = 6
@@ -38,48 +42,45 @@ class GooseGame(private val players: Players, private val diceRoller: DiceRoller
         val player = players.find(elements[1])
         val dice = diceRoller.roll()
 
-        val previousPosition = player.position
-        players.updatePosition(player, previousPosition + dice.sum)
+        players.updatePosition(player, player.position + dice.sum)
 
         if (isWinPolicy(player)) {
-            players.updatePosition(player, winSpace - (player.position - winSpace))
-            return printMovePlayer(player.name, dice, previousPosition, winSpace) +
-                    ". ${player.name} bounces! ${player.name} returns to ${player.position}"
+            return winPolicy(player, dice)
         }
 
         if (isBouncePolicy(player)) {
-            return printMovePlayer(player.name, dice, previousPosition, player.position) +
-                    ". ${player.name} Wins!!"
+            return bouncePolicy(player, dice)
         }
 
         if (isBridgePolicy(player)) {
-            players.updatePosition(player, 12)
-            return printMovePlayer(player.name, dice, previousPosition, bridgeSpace) +
-                    ". ${player.name} jumps to 12"
+            return bridgePolicy(player, dice)
         }
 
-        return printMovePlayer(player.name, dice, previousPosition, player.position)
+        return defaultPolicy(player, dice)
+    }
+
+    private fun isWinPolicy(player: Player) = player.position == winSpace
+
+    private fun winPolicy(player: Player, dice: Dice): String {
+        return printer.win(player, dice, player.previousPosition)
     }
 
     private fun isBridgePolicy(player: Player) = player.position == bridgeSpace
 
-    private fun isBouncePolicy(player: Player) = player.position == winSpace
-
-    private fun isWinPolicy(player: Player) = player.position > winSpace
-
-    private fun printMovePlayer(name: String, dice: Dice, previousPosition: Int, newPosition: Int): String {
-        return "$name rolls ${dice.first}, ${dice.second}. $name moves from ${printPosition(previousPosition)} to ${printPosition(newPosition)}"
+    private fun bridgePolicy(player: Player, dice: Dice): String {
+        val previousPosition = player.previousPosition
+        players.updatePosition(player, 12)
+        return printer.bridge(player, dice, previousPosition, bridgeSpace)
     }
 
-    private fun printPosition(position: Int): String {
-        if (position == 0) {
-            return "Start"
-        }
+    private fun isBouncePolicy(player: Player) = player.position > winSpace
 
-        if (position == bridgeSpace) {
-            return "The Bridge"
-        }
-
-        return position.toString()
+    private fun bouncePolicy(player: Player, dice: Dice): String {
+        val previousPosition = player.previousPosition
+        players.updatePosition(player, winSpace - (player.position - winSpace))
+        return printer.bounce(player, dice, previousPosition, 63)
     }
+
+    private fun defaultPolicy(player: Player, dice: Dice) =
+        printer.movePlayer(player.name, dice, player.previousPosition, player.position)
 }

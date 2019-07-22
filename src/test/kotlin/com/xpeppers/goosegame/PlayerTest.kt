@@ -27,4 +27,14 @@ class PlayerTest {
 
         assertThat(player.position, `is`(12))
     }
+
+    @Test
+    fun `previousPosition tell the previous position of player`() {
+        val player = Player("Pippo")
+
+        player.position = 12
+        player.position = 18
+
+        assertThat(player.previousPosition, `is`(12))
+    }
 }
