@@ -1,6 +1,10 @@
 package com.xpeppers.goosegame
 
 class Printer {
+    fun theGoose(player: Player, dice: Dice, beforeMovePosition: Int): String =
+        movePlayer(player.name, dice, beforeMovePosition, player.previousPosition) +
+                ", The Goose. ${player.name} moves again and goes to ${player.position}"
+
     fun bridge(player: Player, dice: Dice, previousPosition: Int, bridgeSpace: Int) =
         movePlayer(player.name, dice, previousPosition, bridgeSpace) +
                 ". ${player.name} jumps to 12"

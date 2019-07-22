@@ -124,6 +124,23 @@ class GooseGameTest {
         assertThat(response, `is`("Pippo rolls 1, 1. Pippo moves from 12 to 14"))
     }
 
+    @Test
+    fun `player on space 5 is on "The Goose"`() {
+        addPlayers("Pippo")
+
+        val response = moveCommand("Pippo", Dice(2, 3))
+
+        assertThat(response , `is`("Pippo rolls 2, 3. Pippo moves from Start to 5, The Goose. Pippo moves again and goes to 10"))
+    }
+
+    @Test
+    fun `player on space The Goose moves again`() {
+        addPlayers("Pippo")
+
+        val response = moveCommand("Pippo", Dice(2, 3), Dice(1, 1))
+
+        assertThat(response , `is`("Pippo rolls 1, 1. Pippo moves from 10 to 12"))
+    }
 
     private fun addPlayers(vararg names: String): GooseGame {
         names.forEach { name -> game.execute("add player $name") }

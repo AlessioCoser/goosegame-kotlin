@@ -51,6 +51,7 @@ class GooseGame(
             WinPolicy(printer),
             BouncePolicy(printer, players),
             BridgePolicy(printer, players),
+            TheGoosePolicy(printer, players),
             DefaultPolicy(printer)
         )
     }
