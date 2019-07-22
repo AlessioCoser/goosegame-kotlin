@@ -119,9 +119,9 @@ class GooseGameTest {
     fun `player in space "The Bridge" moves to space 12`() {
         addPlayers("Pippo", "Pluto")
 
-        val response = moveCommand("Pippo", Dice(2, 4), Dice(1, 1))
+        val response = moveCommand("Pippo", Dice(2, 4), Dice(1, 2))
 
-        assertThat(response, `is`("Pippo rolls 1, 1. Pippo moves from 12 to 14"))
+        assertThat(response, `is`("Pippo rolls 1, 2. Pippo moves from 12 to 15"))
     }
 
     @Test

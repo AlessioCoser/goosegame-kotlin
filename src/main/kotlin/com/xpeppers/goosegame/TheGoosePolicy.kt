@@ -2,7 +2,7 @@ package com.xpeppers.goosegame
 
 class TheGoosePolicy(private val printer: Printer, private val players: Players) : Policy {
     override fun canExecute(player: Player): Boolean {
-        return player.position == 5
+        return player.position in listOf(5, 9, 14, 18, 23, 27)
     }
 
     override fun execute(player: Player, dice: Dice): String {

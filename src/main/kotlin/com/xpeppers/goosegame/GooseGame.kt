@@ -8,11 +8,7 @@ fun main() {
     }
 }
 
-class GooseGame(
-    private val players: Players,
-    private val diceRoller: DiceRoller,
-    private val printer: Printer = Printer()
-) {
+class GooseGame(private val players: Players, private val diceRoller: DiceRoller, private val printer: Printer = Printer()) {
 
     fun execute(command: String): String {
         if (command.startsWith("move ")) {
