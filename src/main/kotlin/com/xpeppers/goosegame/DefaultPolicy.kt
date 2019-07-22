@@ -1,12 +1,12 @@
 package com.xpeppers.goosegame
 
-class DefaultPolicy(private val printer: Printer) {
+class DefaultPolicy(private val printer: Printer): Policy {
 
-    fun canExecute(player: Player): Boolean {
+    override fun canExecute(player: Player): Boolean {
         return true
     }
 
-    fun execute(player: Player, dice: Dice): String {
+    override fun execute(player: Player, dice: Dice): String {
         return printer.movePlayer(player.name, dice, player.previousPosition, player.position)
     }
 }

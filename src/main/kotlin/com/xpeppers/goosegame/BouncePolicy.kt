@@ -1,15 +1,15 @@
 package com.xpeppers.goosegame
 
-class BouncePolicy(private val printer: Printer, private val players: Players) {
+class BouncePolicy(private val printer: Printer, private val players: Players): Policy {
     private val winSpace = 63
 
-    fun canExecute(player: Player): Boolean {
+    override fun canExecute(player: Player): Boolean {
         return player.position > winSpace
     }
 
-    fun execute(player: Player, dice: Dice): String {
+    override fun execute(player: Player, dice: Dice): String {
         val previousPosition = player.previousPosition
         players.updatePosition(player, winSpace - (player.position - winSpace))
-        return printer.bounce(player, dice, previousPosition, 63)
+        return printer.bounce(player, dice, previousPosition, winSpace)
     }
 }

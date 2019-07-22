@@ -1,15 +1,16 @@
 package com.xpeppers.goosegame
 
-class BridgePolicy(private val printer: Printer, val players: Players) {
+class BridgePolicy(private val printer: Printer, val players: Players): Policy {
     private val bridgeSpace = 6
+    private val jumpTo = 12
 
-    fun canExecute(player: Player): Boolean {
+    override fun canExecute(player: Player): Boolean {
         return player.position == bridgeSpace
     }
 
-    fun execute(player: Player, dice: Dice): String {
+    override fun execute(player: Player, dice: Dice): String {
         val previousPosition = player.previousPosition
-        players.updatePosition(player, 12)
+        players.updatePosition(player, jumpTo)
         return printer.bridge(player, dice, previousPosition, bridgeSpace)
     }
 }

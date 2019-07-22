@@ -13,9 +13,6 @@ class GooseGame(
     private val diceRoller: DiceRoller,
     private val printer: Printer = Printer()
 ) {
-    private val winSpace = 63
-
-    private val bridgeSpace = 6
 
     fun execute(command: String): String {
         if (command.startsWith("move ")) {
@@ -44,27 +41,17 @@ class GooseGame(
 
         players.updatePosition(player, player.position + dice.sum)
 
-        val winPolicy = WinPolicy(printer)
-        val bouncePolicy = BouncePolicy(printer, players)
-        val bridgePolicy = BridgePolicy(printer, players)
-        val defaultPolicy = DefaultPolicy(printer)
+        return policies()
+            .first { policy -> policy.canExecute(player) }
+            .execute(player, dice)
+    }
 
-        if (winPolicy.canExecute(player)) {
-            return winPolicy.execute(player, dice)
-        }
-
-        if (bouncePolicy.canExecute(player)) {
-            return bouncePolicy.execute(player, dice)
-        }
-
-        if (bridgePolicy.canExecute(player)) {
-            return bridgePolicy.execute(player, dice)
-        }
-
-        if(defaultPolicy.canExecute(player)) {
-            return defaultPolicy.execute(player, dice)
-        }
-
-        return ""
+    private fun policies(): List<Policy> {
+        return listOf(
+            WinPolicy(printer),
+            BouncePolicy(printer, players),
+            BridgePolicy(printer, players),
+            DefaultPolicy(printer)
+        )
     }
 }
