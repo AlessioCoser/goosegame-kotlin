@@ -48,6 +48,7 @@ class GooseGame(private val players: Players, private val diceRoller: DiceRoller
             BouncePolicy(printer, players),
             BridgePolicy(printer, players),
             TheGoosePolicy(printer, players),
+            PrankPolicy(printer, players),
             DefaultPolicy(printer)
         )
     }

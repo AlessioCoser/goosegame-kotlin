@@ -151,6 +151,16 @@ class GooseGameTest {
         assertThat(response , `is`("Pippo rolls 2, 2. Pippo moves from 10 to 14, The Goose. Pippo moves again and goes to 18, The Goose. Pippo moves again and goes to 22"))
     }
 
+    @Test
+    fun `player on space occupied by another player, sends him to player's previous position`() {
+        addPlayers("Pippo", "Pluto")
+
+        moveCommand("Pluto", Dice(5, 3))
+        val response = moveCommand("Pippo", Dice(4, 4))
+
+        assertThat(response , `is`("Pippo rolls 4, 4. Pippo moves from Start to 8. On 8 there is Pluto, who returns to Start"))
+    }
+
     private fun addPlayers(vararg names: String): GooseGame {
         names.forEach { name -> game.execute("add player $name") }
         return game

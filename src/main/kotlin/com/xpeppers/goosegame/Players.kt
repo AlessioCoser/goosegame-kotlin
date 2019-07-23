@@ -14,4 +14,9 @@ class Players {
     }
 
     fun names() = players.map(Player::name)
+
+    fun inSamePositionOf(actual: Player): List<Player> {
+        return players
+            .filter { player -> player != actual && player.position == actual.position }
+    }
 }
