@@ -6,8 +6,18 @@ class TheGoosePolicy(private val printer: Printer, private val players: Players)
     }
 
     override fun execute(player: Player, dice: Dice): String {
-        val beforeMovePosition = player.previousPosition
+        val response = printer.movePlayer(player.name, dice, player.previousPosition, player.position)
+
+        return moves(player, dice, response)
+    }
+
+    private fun moves(player: Player, dice: Dice, response: String): String {
+        if (!canExecute(player)) {
+            return response
+        }
+
         players.updatePosition(player, player.position + dice.sum)
-        return printer.theGoose(player, dice, beforeMovePosition)
+
+        return moves(player, dice, printer.theGoose(player, response))
     }
 }

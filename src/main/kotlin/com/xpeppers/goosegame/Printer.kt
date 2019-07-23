@@ -1,9 +1,8 @@
 package com.xpeppers.goosegame
 
 class Printer {
-    fun theGoose(player: Player, dice: Dice, beforeMovePosition: Int): String =
-        movePlayer(player.name, dice, beforeMovePosition, player.previousPosition) +
-                ", The Goose. ${player.name} moves again and goes to ${player.position}"
+    fun theGoose(player: Player, response: String): String =
+        response + ", The Goose. ${player.name} moves again and goes to ${player.position}"
 
     fun bridge(player: Player, dice: Dice, previousPosition: Int, bridgeSpace: Int) =
         movePlayer(player.name, dice, previousPosition, bridgeSpace) +
@@ -18,9 +17,7 @@ class Printer {
                 ". ${player.name} bounces! ${player.name} returns to ${player.position}"
 
     fun movePlayer(name: String, dice: Dice, previousPosition: Int, newPosition: Int): String {
-        return "$name rolls ${dice.first}, ${dice.second}. $name moves from ${printPosition(previousPosition)} to ${printPosition(
-            newPosition
-        )}"
+        return "$name rolls ${dice.first}, ${dice.second}. $name moves from ${printPosition(previousPosition)} to ${printPosition(newPosition)}"
     }
 
     private fun printPosition(position: Int): String {
