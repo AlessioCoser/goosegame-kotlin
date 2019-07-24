@@ -7,7 +7,7 @@ class AddPlayer(private val printer: Printer, private val players: Players): Han
     override fun handle(command: String): String {
         val playerName = command.substring(11)
 
-        if (players.present(playerName)) {
+        if (players.exists(playerName)) {
             return printer.playerAlreadyExists(playerName)
         }
 

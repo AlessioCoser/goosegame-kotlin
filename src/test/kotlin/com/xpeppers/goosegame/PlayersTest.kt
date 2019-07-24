@@ -10,7 +10,7 @@ class PlayersTest {
 
     @Before
     fun before() {
-        players = Players()
+        players = InMemoryPlayers()
         players.add("first")
         players.add("second")
     }

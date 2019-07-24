@@ -1,22 +1,15 @@
 package com.xpeppers.goosegame
 
-class Players {
-    private val players = mutableListOf<Player>()
+interface Players {
+    fun add(playerName: String)
 
-    fun add(playerName: String) = players.add(Player(playerName))
+    fun find(name: String) : Player
 
-    fun find(name: String) = players.first { player -> player.name == name }
+    fun exists(playerName: String) : Boolean
 
-    fun present(playerName: String) = names().contains(playerName)
+    fun updatePosition(player: Player, newPosition: Int)
 
-    fun updatePosition(player: Player, newPosition: Int) {
-        player.position = newPosition
-    }
+    fun names() : List<String>
 
-    fun names() = players.map(Player::name)
-
-    fun inSamePositionOf(actual: Player): List<Player> {
-        return players
-            .filter { player -> player != actual && player.position == actual.position }
-    }
+    fun inSamePositionOf(actual: Player): List<Player>
 }
