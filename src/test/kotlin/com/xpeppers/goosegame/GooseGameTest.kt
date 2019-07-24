@@ -14,7 +14,7 @@ class GooseGameTest {
     @Before
     fun before() {
         diceRoller = mock()
-        game = GooseGame(Players(), diceRoller, Printer())
+        game = GooseGame(Players(), diceRoller, CliPrinter())
     }
 
     @Test

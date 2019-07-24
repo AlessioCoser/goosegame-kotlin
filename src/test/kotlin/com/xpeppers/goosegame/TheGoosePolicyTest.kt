@@ -8,7 +8,7 @@ import org.junit.Test
 class TheGoosePolicyTest {
     @Test
     fun `can execute when not in spaces 5, 9, 14, 18, 23, 27`() {
-        val policy = TheGoosePolicy(Printer(), Players())
+        val policy = TheGoosePolicy(CliPrinter(), Players())
 
         assertThat(policy.canExecute(playerIn(0)), `is`(false))
         assertThat(policy.canExecute(playerIn(15)), `is`(false))
@@ -17,7 +17,7 @@ class TheGoosePolicyTest {
 
     @Test
     fun `can execute when in spaces 5, 9, 14, 18, 23, 27`() {
-        val policy = TheGoosePolicy(Printer(), Players())
+        val policy = TheGoosePolicy(CliPrinter(), Players())
 
         assertThat(policy.canExecute(playerIn(5)), `is`(true))
         assertThat(policy.canExecute(playerIn(9)), `is`(true))
