@@ -1,6 +1,6 @@
 package com.xpeppers.goosegame
 
-class MovePlayer(private val players: Players, private val diceRoller: DiceRoller, private val printer: Printer) : Handler {
+class MovePlayer(private val players: Players, private val diceRoller: DiceRoller, private val printer: Printer) : CommandHandler {
     override fun canHandle(command: String): Boolean = command.startsWith("move ")
 
     override fun handle(command: String): String {

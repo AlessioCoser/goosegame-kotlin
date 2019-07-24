@@ -16,7 +16,7 @@ class GooseGame(private val players: Players, private val diceRoller: DiceRoller
             .handle(command)
     }
 
-    private fun handlers(): List<Handler> {
+    private fun handlers(): List<CommandHandler> {
         return listOf(
             MovePlayer(players, diceRoller, printer),
             AddPlayer(printer, players),

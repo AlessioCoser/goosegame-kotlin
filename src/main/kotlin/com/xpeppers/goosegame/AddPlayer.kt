@@ -1,6 +1,6 @@
 package com.xpeppers.goosegame
 
-class AddPlayer(private val printer: Printer, private val players: Players): Handler {
+class AddPlayer(private val printer: Printer, private val players: Players): CommandHandler {
 
     override fun canHandle(command: String): Boolean = command.startsWith("add player")
 
