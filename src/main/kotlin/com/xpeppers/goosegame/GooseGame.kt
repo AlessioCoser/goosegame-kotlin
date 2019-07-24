@@ -1,14 +1,14 @@
 package com.xpeppers.goosegame
 
 fun main() {
-    val game = GooseGame(Players(), RealDiceRoller())
+    val game = GooseGame(Players(), RealDiceRoller(), Printer())
 
     while (true) {
         print(game.execute(readLine()!!.toString()) + "\n")
     }
 }
 
-class GooseGame(private val players: Players, private val diceRoller: DiceRoller, private val printer: Printer = Printer()) {
+class GooseGame(private val players: Players, private val diceRoller: DiceRoller, private val printer: Printer) {
 
     fun execute(command: String): String {
         if (command.startsWith("move ")) {
