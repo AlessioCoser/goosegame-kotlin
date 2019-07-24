@@ -15,7 +15,11 @@ class GooseGame(private val players: Players, private val diceRoller: DiceRoller
             return movePlayer(command)
         }
 
-        return addPlayers(command)
+        if (command.startsWith("add player")) {
+            return addPlayers(command)
+        }
+
+        return printer.notFound()
     }
 
     private fun addPlayers(command: String): String {

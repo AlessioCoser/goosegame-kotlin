@@ -161,6 +161,11 @@ class GooseGameTest {
         assertThat(response , `is`("Pippo rolls 4, 4. Pippo moves from Start to 8. On 8 there is Pluto, who returns to Start"))
     }
 
+    @Test
+    fun `when command not found print error`() {
+        assertThat(game.execute("not found command"), `is`("Error: command not found"))
+    }
+
     private fun addPlayers(vararg names: String): GooseGame {
         names.forEach { name -> game.execute("add player $name") }
         return game

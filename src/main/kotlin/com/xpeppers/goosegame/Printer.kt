@@ -28,4 +28,6 @@ class Printer {
         6 -> "The Bridge"
         else -> position
     }
+
+    fun notFound(): String = "Error: command not found"
 }
