@@ -19,14 +19,14 @@ class GooseGameTest {
 
     @Test
     fun `add first player`() {
-        val response = game.execute("add player Pippo")
+        val response = game.run("add player Pippo")
 
         assertThat(response, `is`("players: Pippo"))
     }
 
     @Test
     fun `add a players with different name`() {
-        val response = game.execute("add player Pluto")
+        val response = game.run("add player Pluto")
 
         assertThat(response, `is`("players: Pluto"))
     }
@@ -35,7 +35,7 @@ class GooseGameTest {
     fun `add two players`() {
         addPlayers("Pluto")
 
-        val response = game.execute("add player Pippo")
+        val response = game.run("add player Pippo")
 
         assertThat(response, `is`("players: Pluto, Pippo"))
     }
@@ -44,7 +44,7 @@ class GooseGameTest {
     fun `doesn't add a duplicated player`() {
         addPlayers("Pippo")
 
-        val response = game.execute("add player Pippo")
+        val response = game.run("add player Pippo")
 
         assertThat(response, `is`("Pippo: already existing player"))
     }
@@ -163,17 +163,17 @@ class GooseGameTest {
 
     @Test
     fun `when command not found print error`() {
-        assertThat(game.execute("not found command"), `is`("Error: command not found"))
+        assertThat(game.run("not found command"), `is`("Error: command not found"))
     }
 
     private fun addPlayers(vararg names: String): GooseGame {
-        names.forEach { name -> game.execute("add player $name") }
+        names.forEach { name -> game.run("add player $name") }
         return game
     }
 
     private fun moveCommand(name: String, vararg dice: Dice): String {
         whenever(diceRoller.roll()).thenReturn(dice.first(), *dice.drop(1).toTypedArray())
 
-        return dice.map { game.execute("move $name") }.last()
+        return dice.map { game.run("move $name") }.last()
     }
 }
