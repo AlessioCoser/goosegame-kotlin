@@ -42,14 +42,12 @@ class GooseGame(private val players: Players, private val diceRoller: DiceRoller
             .execute(player, dice)
     }
 
-    private fun policies(): List<Policy> {
-        return listOf(
-            WinPolicy(printer),
-            BouncePolicy(printer, players),
-            BridgePolicy(printer, players),
-            TheGoosePolicy(printer, players),
-            PrankPolicy(printer, players),
-            DefaultPolicy(printer)
-        )
-    }
+    private fun policies() = listOf(
+        WinPolicy(printer),
+        BouncePolicy(printer, players),
+        BridgePolicy(printer, players),
+        TheGoosePolicy(printer, players),
+        PrankPolicy(printer, players),
+        DefaultPolicy(printer)
+    )
 }
