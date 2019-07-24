@@ -7,13 +7,12 @@ class AddPlayerCommand(private val printer: Printer, val players: Players): Game
     override fun run(command: String): String {
         val playerName = command.substring(11)
 
-
         if (players.present(playerName)) {
-            return "$playerName: already existing player"
+            return printer.playerAlreadyExists(playerName)
         }
 
         players.add(playerName)
 
-        return "players: " + players.names().joinToString(", ")
+        return printer.players(players.names())
     }
 }

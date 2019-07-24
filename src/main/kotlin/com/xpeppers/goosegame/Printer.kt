@@ -23,11 +23,15 @@ class Printer {
     fun movePlayer(name: String, dice: Dice, previousPosition: Int, newPosition: Int): String =
         "$name rolls ${dice.first}, ${dice.second}. $name moves from ${printPosition(previousPosition)} to ${printPosition(newPosition)}"
 
+    fun playerAlreadyExists(playerName: String): String = "$playerName: already existing player"
+
+    fun players(names: List<String>): String = "players: " + names.joinToString(", ")
+
+    fun notFound(): String = "Error: command not found"
+
     private fun printPosition(position: Int) = when (position) {
         0 -> "Start"
         6 -> "The Bridge"
         else -> position
     }
-
-    fun notFound(): String = "Error: command not found"
 }
