@@ -15,8 +15,10 @@ class GooseGame(private val players: Players, private val diceRoller: DiceRoller
             return movePlayerCommand(command)
         }
 
-        if (isAddPlayerCommand(command)) {
-            return addPlayerCommand(command)
+        val addPlayer = AddPlayerCommand(printer, players)
+
+        if (addPlayer.canRun(command)) {
+            return addPlayer.run(command)
         }
 
         val notFound = NotFoundCommand(printer)
