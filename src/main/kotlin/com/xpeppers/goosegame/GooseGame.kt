@@ -11,16 +11,16 @@ fun main() {
 class GooseGame(private val players: Players, private val diceRoller: DiceRoller, private val printer: Printer) {
 
     fun run(command: String): String {
-        return commands()
-            .first { c -> c.canRun(command) }
-            .run(command)
+        return handlers()
+            .first { handler -> handler.canHandle(command) }
+            .handle(command)
     }
 
-    private fun commands(): List<GameCommand> {
+    private fun handlers(): List<Handler> {
         return listOf(
-            MovePlayerCommand(players, diceRoller, printer),
-            AddPlayerCommand(printer, players),
-            NotFoundCommand(printer)
+            MovePlayer(players, diceRoller, printer),
+            AddPlayer(printer, players),
+            NotFound(printer)
         )
     }
 }
