@@ -11,18 +11,26 @@ fun main() {
 class GooseGame(private val players: Players, private val diceRoller: DiceRoller, private val printer: Printer) {
 
     fun execute(command: String): String {
-        if (command.startsWith("move ")) {
-            return movePlayer(command)
+        if (isMovePlayerCommand(command)) {
+            return movePlayerCommand(command)
         }
 
-        if (command.startsWith("add player")) {
-            return addPlayers(command)
+        if (isAddPlayerCommand(command)) {
+            return addPlayerCommand(command)
         }
 
-        return printer.notFound()
+        val notFound = NotFoundCommand(printer)
+
+        if(notFound.canRun(command)) {
+            return notFound.run(command)
+        }
+
+        return ""
     }
 
-    private fun addPlayers(command: String): String {
+    private fun isAddPlayerCommand(command: String) = command.startsWith("add player")
+
+    private fun addPlayerCommand(command: String): String {
         val playerName = command.substring(11)
 
         if (players.present(playerName)) {
@@ -34,7 +42,9 @@ class GooseGame(private val players: Players, private val diceRoller: DiceRoller
         return "players: " + players.names().joinToString(", ")
     }
 
-    private fun movePlayer(command: String): String {
+    private fun isMovePlayerCommand(command: String) = command.startsWith("move ")
+
+    private fun movePlayerCommand(command: String): String {
         val elements = command.split(" ", ",")
         val player = players.find(elements[1])
         val dice = diceRoller.roll()
