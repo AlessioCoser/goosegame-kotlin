@@ -27,7 +27,7 @@ As a player, I want to invoke an http API in order to add a new player
 2. Add Player duplicated player
    ```
    When the user runs: "POST /players/add" with body '{"name":"pippo"}'
-   the system responds with "400" status code and body '{"error": "Already existing player"}'
+   the system responds with "409" status code and body '{"error": "Already existing player"}'
    ```
 
 ### 10. Move Players with an http route (Optional Step)
