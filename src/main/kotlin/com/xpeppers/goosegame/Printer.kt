@@ -4,8 +4,9 @@ class Printer {
     fun prank(other: Player): String =
         ". On ${printPosition(other.previousPosition)} there is ${other.name}, who returns to ${printPosition(other.position)}"
 
-    fun theGoose(player: Player, response: String): String =
-        response + ", The Goose. ${player.name} moves again and goes to ${printPosition(player.position)}"
+    fun theGoose(name: String, beginPosition: Int, landPosition: Int, dice: Dice, moves: MutableList<Int>): String =
+        movePlayer(name, dice, beginPosition, landPosition) +
+                moves.joinToString("") { move -> ", The Goose. $name moves again and goes to ${printPosition(move)}" }
 
     fun bridge(player: Player, dice: Dice, previousPosition: Int, bridgeSpace: Int): String =
         movePlayer(player.name, dice, previousPosition, bridgeSpace) +
