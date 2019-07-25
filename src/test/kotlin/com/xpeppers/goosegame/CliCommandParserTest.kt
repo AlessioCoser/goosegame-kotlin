@@ -11,4 +11,11 @@ class CliCommandParserTest {
 
         assertThat(parser.parse("not found"), `is`(Command.notFound()))
     }
+
+    @Test
+    fun `creates an add player command when command starts with add player`() {
+        val parser = CliCommandParser()
+
+        assertThat(parser.parse("add player Pippo"), `is`(Command.addPlayer("Pippo")))
+    }
 }
