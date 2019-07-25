@@ -2,16 +2,15 @@ package com.xpeppers.goosegame
 
 class AddPlayer(private val printer: Printer, private val players: Players): CommandHandler {
 
-    override fun canHandle(command: String): Boolean = command.startsWith("add player")
+    override fun canHandle(command: Command): Boolean =
+        command.type == Command.Type.ADD_PLAYER
 
-    override fun handle(command: String): String {
-        val playerName = command.substring(11)
-
-        if (players.exists(playerName)) {
-            return printer.playerAlreadyExists(playerName)
+    override fun handle(command: Command): String {
+        if (players.exists(command.name)) {
+            return printer.playerAlreadyExists(command.name)
         }
 
-        players.add(playerName)
+        players.add(command.name)
 
         return printer.players(players.names())
     }

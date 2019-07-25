@@ -1,11 +1,11 @@
 package com.xpeppers.goosegame
 
 class MovePlayer(private val players: Players, private val diceRoller: DiceRoller, private val printer: Printer) : CommandHandler {
-    override fun canHandle(command: String): Boolean = command.startsWith("move ")
+    override fun canHandle(command: Command): Boolean =
+        command.type == Command.Type.MOVE_PLAYER
 
-    override fun handle(command: String): String {
-        val elements = command.split(" ", ",")
-        val player = players.find(elements[1])
+    override fun handle(command: Command): String {
+        val player = players.find(command.name)
         val dice = diceRoller.roll()
 
         players.updatePosition(player, player.position + dice.sum)

@@ -1,6 +1,6 @@
 package com.xpeppers.goosegame
 
 class NotFound(private val printer: Printer): CommandHandler {
-    override fun canHandle(command: String): Boolean = true
-    override fun handle(command: String): String = printer.notFound()
+    override fun canHandle(command: Command): Boolean = true
+    override fun handle(command: Command): String = printer.notFound()
 }

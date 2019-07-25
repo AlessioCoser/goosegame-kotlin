@@ -2,15 +2,16 @@ package com.xpeppers.goosegame
 
 fun main() {
     val game = GooseGame(InMemoryPlayers(), RealDiceRoller(), CliPrinter())
+    val parser = CliCommandParser()
 
     while (true) {
-        print(game.run(readLine()!!.toString()) + "\n")
+        print(game.run(parser.parse(readLine()!!.toString())) + "\n")
     }
 }
 
 class GooseGame(private val players: Players, private val diceRoller: DiceRoller, private val printer: Printer) {
 
-    fun run(command: String): String {
+    fun run(command: Command): String {
         return handlers()
             .first { handler -> handler.canHandle(command) }
             .handle(command)

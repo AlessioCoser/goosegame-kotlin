@@ -1,6 +1,6 @@
 package com.xpeppers.goosegame
 
 interface CommandHandler {
-    fun canHandle(command: String): Boolean
-    fun handle(command: String): String
+    fun canHandle(command: Command): Boolean
+    fun handle(command: Command): String
 }
