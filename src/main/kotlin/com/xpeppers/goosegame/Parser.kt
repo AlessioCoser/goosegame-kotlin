@@ -1,5 +1,5 @@
 package com.xpeppers.goosegame
 
-interface CommandParser {
+interface Parser {
     fun parse(command: String) : Command
 }
