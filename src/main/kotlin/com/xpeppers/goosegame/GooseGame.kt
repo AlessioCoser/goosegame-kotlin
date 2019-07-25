@@ -2,10 +2,9 @@ package com.xpeppers.goosegame
 
 fun main() {
     val game = GooseGame(InMemoryPlayers(), RealDiceRoller(), CliPrinter())
-    val parser = CliParser()
 
     while (true) {
-        print(game.run(parser.parse(readLine()!!.toString())) + "\n")
+        print(game.run(CliParser(readLine()!!.toString()).parse()) + "\n")
     }
 }
 
