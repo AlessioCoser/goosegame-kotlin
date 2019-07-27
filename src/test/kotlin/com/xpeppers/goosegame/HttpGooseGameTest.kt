@@ -10,13 +10,13 @@ import org.junit.Test
 
 class HttpGooseGameTest {
     private val port = 3000
-    private lateinit var game : HttpGooseGame
+    private lateinit var game : GameRunner
     private lateinit var diceRoller: DiceRoller
 
     @Before
     fun setUp() {
         diceRoller = mock()
-        game = HttpGooseGame(port, diceRoller).start()
+        game = HttpGooseGame(port, InMemoryPlayers(), diceRoller, HttpPrinter()).start()
     }
 
     @After

@@ -2,9 +2,9 @@ package com.xpeppers.goosegame
 
 import spark.Spark.*
 
-class HttpGooseGame(private val httpPort: Int, val diceRoller: DiceRoller) {
-    fun start(): HttpGooseGame {
-        val game = GooseGame(InMemoryPlayers(), diceRoller, HttpPrinter())
+class HttpGooseGame(private val httpPort: Int, private val players: InMemoryPlayers, private val diceRoller: DiceRoller, private val printer: Printer): GameRunner {
+    override fun start(): GameRunner {
+        val game = GooseGame(players, diceRoller, printer)
 
         port(httpPort)
 
@@ -19,7 +19,7 @@ class HttpGooseGame(private val httpPort: Int, val diceRoller: DiceRoller) {
         return this
     }
 
-    fun close() {
+    override fun close() {
         stop()
         awaitStop()
     }
