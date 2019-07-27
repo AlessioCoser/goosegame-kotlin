@@ -4,7 +4,7 @@ class MovePlayer(private val players: Players, private val diceRoller: DiceRolle
     override fun canHandle(command: Command): Boolean =
         command.type == Command.Type.MOVE_PLAYER
 
-    override fun handle(command: Command): String {
+    override fun handle(command: Command): GameResponse {
         val player = players.find(command.name)
         val dice = diceRoller.roll()
 

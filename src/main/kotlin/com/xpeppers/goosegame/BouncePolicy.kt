@@ -7,7 +7,7 @@ class BouncePolicy(private val printer: Printer, private val players: Players): 
         return player.position > winSpace
     }
 
-    override fun execute(player: Player, dice: Dice): String {
+    override fun execute(player: Player, dice: Dice): GameResponse {
         val previousPosition = player.previousPosition
         players.updatePosition(player, winSpace - (player.position - winSpace))
         return printer.bounce(player, dice, previousPosition, winSpace)

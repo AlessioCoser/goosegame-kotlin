@@ -32,4 +32,25 @@ class HttpGooseGameTest {
             .contentType("application/json")
             .body("players", equalTo(listOf("Pippo")))
     }
+
+    @Test
+    fun `add an already existing player`() {
+        given()
+            .port(port)
+            .contentType("application/json")
+            .body("{\"name\":\"Pippo\"}")
+            .post("/players/add")
+            .then()
+            .statusCode(200)
+
+        given()
+            .port(port)
+            .contentType("application/json")
+            .body("{\"name\":\"Pippo\"}")
+            .post("/players/add")
+            .then()
+            .statusCode(409)
+            .contentType("application/json")
+            .body("error", equalTo("Pippo: Already existing player"))
+    }
 }

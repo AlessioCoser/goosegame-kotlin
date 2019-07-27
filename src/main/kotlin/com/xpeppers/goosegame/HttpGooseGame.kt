@@ -26,7 +26,13 @@ class HttpGooseGame(private val httpPort: Int) {
             response.status(200)
             response.type("application/json")
 
-            game.run(Command.addPlayer(playerNameFrom(request)))
+            val result = game.run(Command.addPlayer(playerNameFrom(request)))
+
+            if (result.message.contains("error")) {
+                response.status(409)
+            }
+
+            result.message
         }
     }
 

@@ -7,7 +7,7 @@ class WinPolicy(private val printer: Printer): Policy {
         return player.position == winSpace
     }
 
-    override fun execute(player: Player, dice: Dice): String {
+    override fun execute(player: Player, dice: Dice): GameResponse {
         return printer.win(player, dice, player.previousPosition)
     }
 }

@@ -5,7 +5,7 @@ class AddPlayer(private val printer: Printer, private val players: Players): Com
     override fun canHandle(command: Command): Boolean =
         command.type == Command.Type.ADD_PLAYER
 
-    override fun handle(command: Command): String {
+    override fun handle(command: Command): GameResponse {
         if (players.exists(command.name)) {
             return printer.playerAlreadyExists(command.name)
         }

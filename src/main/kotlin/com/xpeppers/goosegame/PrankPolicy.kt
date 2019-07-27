@@ -5,12 +5,11 @@ class PrankPolicy(private val printer: Printer, private val players: Players) : 
         return players.inSamePositionOf(player).isNotEmpty()
     }
 
-    override fun execute(player: Player, dice: Dice): String {
+    override fun execute(player: Player, dice: Dice): GameResponse {
         val other = players.inSamePositionOf(player).single()
 
         players.updatePosition(other, player.previousPosition)
 
-        return printer.movePlayer(player.name, dice, player.previousPosition, player.position) +
-                printer.prank(other)
+        return printer.prank(player.name, player.previousPosition, player.position, dice, other)
     }
 }

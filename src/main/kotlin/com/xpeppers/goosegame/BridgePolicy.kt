@@ -8,7 +8,7 @@ class BridgePolicy(private val printer: Printer, val players: Players): Policy {
         return player.position == bridgeSpace
     }
 
-    override fun execute(player: Player, dice: Dice): String {
+    override fun execute(player: Player, dice: Dice): GameResponse {
         val previousPosition = player.previousPosition
         players.updatePosition(player, jumpTo)
         return printer.bridge(player, dice, previousPosition, bridgeSpace)
