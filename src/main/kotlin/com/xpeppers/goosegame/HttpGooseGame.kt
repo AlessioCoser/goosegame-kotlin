@@ -23,12 +23,12 @@ class HttpGooseGame(private val httpPort: Int) {
 
     private fun addPlayerRoute(game: GooseGame): (request: Request, response: Response) -> String {
         return { request, response ->
-            response.status(200)
             response.type("application/json")
 
             val result = game.run(Command.addPlayer(playerNameFrom(request)))
 
-            if (result.message.contains("error")) {
+            response.status(200)
+            if (result.type == GameResponse.Type.ERROR) {
                 response.status(409)
             }
 

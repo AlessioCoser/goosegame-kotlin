@@ -26,7 +26,7 @@ class HttpPrinter() : Printer {
     }
 
     override fun playerAlreadyExists(playerName: String): GameResponse {
-        return GameResponse.ok("{\"error\": \"$playerName: Already existing player\"}")
+        return GameResponse.error("{\"error\": \"$playerName: Already existing player\"}")
     }
 
     override fun players(names: List<String>): GameResponse {
