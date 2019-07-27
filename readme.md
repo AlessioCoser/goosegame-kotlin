@@ -21,7 +21,7 @@ As a player, I want to invoke an http API in order to add a new player
 1. Add Player
    ```
    When the user runs: "POST /players/add" with body '{"name":"pippo"}'
-   the system responds with "200" status code and body '["pippo"]'
+   the system responds with "200" status code and body '{"players":["pippo"]}'
    ```
 
 2. Add Player duplicated player
@@ -112,3 +112,33 @@ As a player, I want to invoke an http API in order to move a player
        }
     }
     ```
+
+## 11. Play the game from both Cli and Http at the same time
+
+1. Add Player
+```
+If there is no participant
+the user writes to cli: "add player Pippo"
+the cli system responds: "players: Pippo"
+the user sends an http request "POST /players/add" with body '{"name":"Pluto"}'
+the http system responds with "200" status code and body '{"players":["Pippo","Pluto"]}'
+```
+
+2. Move Player
+```
+If there is one participant Pippo
+assuming that the dice get 2 and 1
+the user writes to cli: "move Pippo"
+the cli system responds: "Pippo rolls 2, 1. Pippo moves from Start to 3"
+assuming that the dice get 1 and 3
+the user sends an http request "GET /players/Pippo/rolls"
+the http system responds with "200" status code and body:
+
+{
+  "Pippo": {
+    "rolls": [1, 3],
+    "moves": {"from": "3", "to": "7"},
+    "status": ""
+  }
+}
+```
