@@ -29,4 +29,25 @@ class HttpPrinterTest {
         assertThat(response.type, `is`(NOT_FOUND))
         assertThat(response.message, `is`(""))
     }
+
+    @Test
+    fun `prints move player from starting point`() {
+        val response = HttpPrinter().movePlayer("Pippo", Dice(1, 2), 0, 3)
+
+        assertThat(response.type, `is`(OK))
+        assertThat(response.message, `is`("{\"Pippo\":{\"rolls\":[1,2],\"moves\":{\"from\":\"Start\",\"to\":\"3\"},\"status\":\"\"}}"))
+    }
+
+    @Test
+    fun `prints move player to Win space`() {
+        val player = playerAt("Pippo", 63)
+        val response = HttpPrinter().win(player, Dice(60, 3), player.previousPosition)
+
+        assertThat(response.type, `is`(OK))
+        assertThat(response.message, `is`("{\"Pippo\":{\"rolls\":[60,3],\"moves\":{\"from\":\"Start\",\"to\":\"63\"},\"status\":\"Wins!\"}}"))
+    }
+
+    private fun playerAt(name: String, pos: Int): Player {
+        return Player(name).apply { position = pos }
+    }
 }
