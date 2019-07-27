@@ -3,7 +3,7 @@ package com.xpeppers.goosegame
 data class GameResponse(val message: String, val type: Type) {
     enum class Type {
         OK,
-        ERROR
+        ALREADY_EXISTS
     }
 
     companion object {
@@ -12,7 +12,7 @@ data class GameResponse(val message: String, val type: Type) {
         }
 
         fun error(message: String): GameResponse {
-            return GameResponse(message, Type.ERROR)
+            return GameResponse(message, Type.ALREADY_EXISTS)
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.xpeppers.goosegame
 
-import com.xpeppers.goosegame.GameResponse.Type.ERROR
+import com.xpeppers.goosegame.GameResponse.Type.ALREADY_EXISTS
 import com.xpeppers.goosegame.GameResponse.Type.OK
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
@@ -19,7 +19,7 @@ class HttpPrinterTest {
     fun `prints player already exists`() {
         val response = HttpPrinter().playerAlreadyExists("Pippo")
 
-        assertThat(response.type, `is`(ERROR))
+        assertThat(response.type, `is`(ALREADY_EXISTS))
         assertThat(response.message, `is`("{\"error\": \"Pippo: Already existing player\"}"))
     }
 }
