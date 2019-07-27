@@ -25,6 +25,17 @@ class HttpGooseGameTest {
     }
 
     @Test
+    fun `not found route`() {
+        given()
+            .port(port)
+            .contentType("application/json")
+            .post("/not/found")
+            .then()
+            .statusCode(404)
+            .contentType("application/json")
+    }
+
+    @Test
     fun `add player route`() {
         given()
             .port(port)
@@ -49,7 +60,7 @@ class HttpGooseGameTest {
             .then()
             .statusCode(409)
             .contentType("application/json")
-            .body("error", equalTo("Pippo: Already existing player"))
+            .body("alreadyExists", equalTo("Pippo: Already existing player"))
     }
 
     @Test

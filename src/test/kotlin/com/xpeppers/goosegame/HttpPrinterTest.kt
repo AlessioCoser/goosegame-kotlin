@@ -20,6 +20,6 @@ class HttpPrinterTest {
         val response = HttpPrinter().playerAlreadyExists("Pippo")
 
         assertThat(response.type, `is`(ALREADY_EXISTS))
-        assertThat(response.message, `is`("{\"error\": \"Pippo: Already existing player\"}"))
+        assertThat(response.message, `is`("{\"alreadyExists\": \"Pippo: Already existing player\"}"))
     }
 }

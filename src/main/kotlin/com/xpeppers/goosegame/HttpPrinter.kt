@@ -26,7 +26,7 @@ class HttpPrinter : Printer {
     }
 
     override fun playerAlreadyExists(playerName: String): GameResponse {
-        return GameResponse.error("{\"error\": \"$playerName: Already existing player\"}")
+        return GameResponse.alreadyExists("{\"alreadyExists\": \"$playerName: Already existing player\"}")
     }
 
     override fun players(names: List<String>): GameResponse {
@@ -34,7 +34,7 @@ class HttpPrinter : Printer {
     }
 
     override fun notFound(): GameResponse {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return GameResponse.notFound("")
     }
 
     private fun printPosition(position: Int): String = when (position) {

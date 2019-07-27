@@ -27,5 +27,6 @@ class HttpGooseGame(private val httpPort: Int, val diceRoller: DiceRoller) {
     private fun statusFor(gameResponse: GameResponse) = when (gameResponse.type) {
         GameResponse.Type.OK -> 200
         GameResponse.Type.ALREADY_EXISTS -> 409
+        GameResponse.Type.NOT_FOUND -> 404
     }
 }
