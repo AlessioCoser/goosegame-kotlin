@@ -1,5 +1,7 @@
 package com.xpeppers.goosegame
 
+import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.whenever
 import io.restassured.RestAssured.given
 import org.hamcrest.Matchers.equalTo
 import org.junit.After
@@ -9,10 +11,12 @@ import org.junit.Test
 class HttpGooseGameTest {
     private val port = 3000
     private lateinit var game : HttpGooseGame
+    private lateinit var diceRoller: DiceRoller
 
     @Before
     fun setUp() {
-        game = HttpGooseGame(port).start()
+        diceRoller = mock()
+        game = HttpGooseGame(port, diceRoller).start()
     }
 
     @After
@@ -35,13 +39,7 @@ class HttpGooseGameTest {
 
     @Test
     fun `add an already existing player`() {
-        given()
-            .port(port)
-            .contentType("application/json")
-            .body("{\"name\":\"Pippo\"}")
-            .post("/players/add")
-            .then()
-            .statusCode(200)
+        addPlayer("Pippo")
 
         given()
             .port(port)
@@ -52,5 +50,33 @@ class HttpGooseGameTest {
             .statusCode(409)
             .contentType("application/json")
             .body("error", equalTo("Pippo: Already existing player"))
+    }
+
+    @Test
+    fun `moves a player from starting point`() {
+        whenever(diceRoller.roll()).thenReturn(Dice(1, 2))
+        addPlayer("Pluto")
+
+        given()
+            .port(port)
+            .contentType("application/json")
+            .get("/players/Pluto/rolls")
+            .then()
+            .statusCode(200)
+            .contentType("application/json")
+            .body("Pluto.rolls", equalTo(listOf(1, 2)))
+            .body("Pluto.moves", equalTo(mapOf("from" to "Start", "to" to "3")))
+            .body("Pluto.status", equalTo(""))
+    }
+
+
+    private fun addPlayer(name: String) {
+        given()
+            .port(port)
+            .contentType("application/json")
+            .body("{\"name\":\"$name\"}")
+            .post("/players/add")
+            .then()
+            .statusCode(200)
     }
 }
