@@ -1,8 +1,5 @@
 package com.xpeppers.goosegame
 
-import com.eclipsesource.json.Json
-import spark.Request
-import spark.Response
 import spark.Spark.*
 
 class HttpGooseGame(private val httpPort: Int) {
@@ -10,7 +7,13 @@ class HttpGooseGame(private val httpPort: Int) {
         val game = GooseGame(InMemoryPlayers(), RealDiceRoller(), HttpPrinter())
 
         port(httpPort)
-        post("/players/add", addPlayerRoute(game))
+
+        before("*") { request, response ->
+            response.type("application/json")
+
+            val gameResponse = game.run(HttpParser(request).parse())
+            halt(statusFor(gameResponse), gameResponse.message)
+        }
 
         awaitInitialization()
         return this
@@ -21,20 +24,8 @@ class HttpGooseGame(private val httpPort: Int) {
         awaitStop()
     }
 
-    private fun addPlayerRoute(game: GooseGame): (request: Request, response: Response) -> String {
-        return { request, response ->
-            response.type("application/json")
-
-            val result = game.run(Command.addPlayer(playerNameFrom(request)))
-
-            response.status(200)
-            if (result.type == GameResponse.Type.ERROR) {
-                response.status(409)
-            }
-
-            result.message
-        }
+    private fun statusFor(gameResponse: GameResponse) = when (gameResponse.type) {
+        GameResponse.Type.OK -> 200
+        GameResponse.Type.ERROR -> 409
     }
-
-    private fun playerNameFrom(request: Request) = Json.parse(request.body()).asObject().get("name").asString()
 }
