@@ -4,6 +4,7 @@ import spark.Spark.*
 
 class HttpGooseGame(private val httpPort: Int) {
     fun start(): HttpGooseGame {
+        val game = GooseGame(InMemoryPlayers(), RealDiceRoller(), HttpPrinter())
 
         port(httpPort)
 
@@ -11,7 +12,7 @@ class HttpGooseGame(private val httpPort: Int) {
             response.status(200)
             response.type("application/json")
 
-            "{\"players\": [\"Pippo\"]}"
+            game.run(Command.addPlayer("Pippo"))
         }
 
         awaitInitialization()
