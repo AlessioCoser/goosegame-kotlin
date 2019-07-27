@@ -13,7 +13,6 @@ class HttpGooseGameTest {
     @Before
     fun setUp() {
         game = HttpGooseGame(port).start()
-
     }
 
     @After
@@ -26,10 +25,11 @@ class HttpGooseGameTest {
         given()
             .port(port)
             .contentType("application/json")
-            .param("name", "Pippo")
+            .body("{\"name\":\"Pippo\"}")
             .post("/players/add")
             .then()
             .statusCode(200)
+            .contentType("application/json")
             .body("players", equalTo(listOf("Pippo")))
     }
 }
