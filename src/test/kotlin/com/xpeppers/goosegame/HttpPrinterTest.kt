@@ -47,7 +47,47 @@ class HttpPrinterTest {
         assertThat(response.message, `is`("{\"Pippo\":{\"rolls\":[60,3],\"moves\":{\"from\":\"Start\",\"to\":\"63\"},\"status\":\"Wins!\"}}"))
     }
 
-    private fun playerAt(name: String, pos: Int): Player {
-        return Player(name).apply { position = pos }
+    @Test
+    fun `prints move player over Win space and Bounce`() {
+        val player = playerAt("Pippo", 61)
+        val response = HttpPrinter().bounce(player, Dice(60, 5), player.previousPosition, 63)
+
+        assertThat(response.type, `is`(OK))
+        assertThat(response.message, `is`("{\"Pippo\":{\"rolls\":[60,5],\"moves\":{\"from\":\"Start\",\"to\":\"61\"},\"status\":\"Bounces!\"}}"))
+    }
+
+    @Test
+    fun `prints move player to the Bridge`() {
+        val player = playerAt("Pippo", 12)
+        val response = HttpPrinter().bridge(player, Dice(4, 2), player.previousPosition, 6)
+
+        assertThat(response.type, `is`(OK))
+        assertThat(response.message, `is`("{\"Pippo\":{\"rolls\":[4,2],\"moves\":{\"from\":\"Start\",\"to\":\"12\"},\"status\":\"Jumps!\"}}"))
+    }
+
+    @Test
+    fun `prints move player to the Goose`() {
+        val player = playerAt("Pippo", 10)
+        val response = HttpPrinter().theGoose(player.name, 0, 5, Dice(3, 2), mutableListOf(5, 10))
+
+        assertThat(response.type, `is`(OK))
+        assertThat(response.message, `is`("{\"Pippo\":{\"rolls\":[3,2],\"moves\":{\"from\":\"Start\",\"to\":\"10\"},\"status\":\"Moves again!\"}}"))
+    }
+
+    @Test
+    fun `prints move player to another players's space`() {
+        val other = playerAt("Pluto", 2, 5)
+        val player = playerAt("Pippo", 5, 2)
+        val response = HttpPrinter().prank(player.name, 2, 5, Dice(1, 2), other)
+
+        assertThat(response.type, `is`(OK))
+        assertThat(response.message, `is`("{\"Pippo\":{\"rolls\":[1,2],\"moves\":{\"from\":\"2\",\"to\":\"5\"},\"status\":\"Pluto returns to 2!\"}}"))
+    }
+
+    private fun playerAt(name: String, current: Int, previous: Int = 0): Player {
+        return Player(name).apply {
+            position = current
+            previousPosition = previous
+        }
     }
 }

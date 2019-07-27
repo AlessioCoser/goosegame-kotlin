@@ -2,15 +2,15 @@ package com.xpeppers.goosegame
 
 class HttpPrinter : Printer {
     override fun prank(name: String, beginPosition: Int, landPosition: Int, dice: Dice, other: Player): GameResponse {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return GameResponse.ok("{\"$name\":{\"rolls\":[${dice.first},${dice.second}],\"moves\":{\"from\":\"${printPosition(beginPosition)}\",\"to\":\"${printPosition(landPosition)}\"},\"status\":\"${other.name} returns to ${other.position}!\"}}")
     }
 
     override fun theGoose(name: String, beginPosition: Int, landPosition: Int, dice: Dice, moves: MutableList<Int>): GameResponse {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return GameResponse.ok("{\"$name\":{\"rolls\":[${dice.first},${dice.second}],\"moves\":{\"from\":\"${printPosition(beginPosition)}\",\"to\":\"${printPosition(moves.last())}\"},\"status\":\"Moves again!\"}}")
     }
 
     override fun bridge(player: Player, dice: Dice, previousPosition: Int, bridgeSpace: Int): GameResponse {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return GameResponse.ok("{\"${player.name}\":{\"rolls\":[${dice.first},${dice.second}],\"moves\":{\"from\":\"${printPosition(previousPosition)}\",\"to\":\"${printPosition(player.position)}\"},\"status\":\"Jumps!\"}}")
     }
 
     override fun win(player: Player, dice: Dice, previousPosition: Int): GameResponse {
@@ -18,7 +18,7 @@ class HttpPrinter : Printer {
     }
 
     override fun bounce(player: Player, dice: Dice, previousPosition: Int, winSpace: Int): GameResponse {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return GameResponse.ok("{\"${player.name}\":{\"rolls\":[${dice.first},${dice.second}],\"moves\":{\"from\":\"${printPosition(previousPosition)}\",\"to\":\"${printPosition(player.position)}\"},\"status\":\"Bounces!\"}}")
     }
 
     override fun movePlayer(name: String, dice: Dice, previousPosition: Int, newPosition: Int): GameResponse {
@@ -39,7 +39,6 @@ class HttpPrinter : Printer {
 
     private fun printPosition(position: Int): String = when (position) {
         0 -> "Start"
-        6 -> "The Bridge"
         else -> position.toString()
     }
 }

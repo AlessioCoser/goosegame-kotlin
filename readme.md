@@ -113,6 +113,23 @@ As a player, I want to invoke an http API in order to move a player
     }
     ```
 
+4. Move a Player to another player's space
+    ```
+    Assuming there is a player "Pluto" at position 5
+    Assuming there is a player "Pippo" at position 2
+    Assuming that the dice get 1 and 2
+    When the user runs: "GET /players/Pippo/rolls"
+    the system responds with "200" status code and body:
+    
+    {
+       "Pippo": {
+         "rolls": [1, 2],
+         "moves": {"from": "Start", "to": "5"},
+         "status": "Pluto returns to 2!"
+       }
+    }
+    ```
+
 ## 11. Play the game from both Cli and Http at the same time
 
 1. Add Player
