@@ -37,10 +37,10 @@ class HttpPrinter : Printer {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    private fun printPosition(position: Int) = when (position) {
+    private fun printPosition(position: Int): String = when (position) {
         0 -> "Start"
         6 -> "The Bridge"
-        else -> position
+        else -> position.toString()
     }
 }
 

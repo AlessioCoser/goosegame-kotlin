@@ -33,9 +33,9 @@ class CliPrinter(): Printer {
     private fun move(name: String, dice: Dice, previousPosition: Int, newPosition: Int) =
         "$name rolls ${dice.first}, ${dice.second}. $name moves from ${printPosition(previousPosition)} to ${printPosition(newPosition)}"
 
-    private fun printPosition(position: Int) = when (position) {
+    private fun printPosition(position: Int): String = when (position) {
         0 -> "Start"
         6 -> "The Bridge"
-        else -> position
+        else -> position.toString()
     }
 }
