@@ -80,6 +80,23 @@ class HttpGooseGameTest {
             .body("Pluto.status", equalTo(""))
     }
 
+    @Test
+    fun `moves a player to win space`() {
+        whenever(diceRoller.roll()).thenReturn(Dice(60, 3))
+        addPlayer("Pluto")
+
+        given()
+            .port(port)
+            .contentType("application/json")
+            .get("/players/Pluto/rolls")
+            .then()
+            .statusCode(200)
+            .contentType("application/json")
+            .body("Pluto.rolls", equalTo(listOf(60, 3)))
+            .body("Pluto.moves", equalTo(mapOf("from" to "Start", "to" to "63")))
+            .body("Pluto.status", equalTo("Wins!"))
+    }
+
 
     private fun addPlayer(name: String) {
         given()

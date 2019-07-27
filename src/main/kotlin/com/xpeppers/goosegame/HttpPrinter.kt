@@ -14,7 +14,7 @@ class HttpPrinter : Printer {
     }
 
     override fun win(player: Player, dice: Dice, previousPosition: Int): GameResponse {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return GameResponse.ok("{\"${player.name}\":{\"rolls\":[${dice.first},${dice.second}],\"moves\":{\"from\":\"${printPosition(previousPosition)}\",\"to\":\"${printPosition(player.position)}\"},\"status\":\"Wins!\"}}")
     }
 
     override fun bounce(player: Player, dice: Dice, previousPosition: Int, winSpace: Int): GameResponse {

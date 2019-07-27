@@ -1,6 +1,6 @@
 package com.xpeppers.goosegame
 
-class CliPrinter(): Printer {
+class CliPrinter: Printer {
 
     override fun prank(name: String, beginPosition: Int, landPosition: Int, dice: Dice, other: Player) =
         GameResponse.ok(move(name, dice, beginPosition, landPosition) +
