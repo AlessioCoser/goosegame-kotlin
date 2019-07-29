@@ -4,11 +4,11 @@ class CliGooseGame(val players: Players, val diceRoller: RealDiceRoller, val pri
     private var running = true
 
     override fun start(): GameRunner {
-        val game = GooseGame(players, diceRoller, printer)
+        val game = GooseGame(players, diceRoller)
 
         while (running) {
             val response = game.run(CliParser(readLine()!!.toString()).parse())
-            print(response.message + "\n")
+            print(printer.print(response))
         }
 
         return this

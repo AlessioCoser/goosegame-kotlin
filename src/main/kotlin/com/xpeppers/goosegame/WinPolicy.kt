@@ -1,6 +1,6 @@
 package com.xpeppers.goosegame
 
-class WinPolicy(private val printer: Printer): Policy {
+class WinPolicy : Policy {
     private val winSpace = 63
 
     override fun canExecute(player: Player): Boolean {
@@ -8,6 +8,6 @@ class WinPolicy(private val printer: Printer): Policy {
     }
 
     override fun execute(player: Player, dice: Dice): GameResponse {
-        return printer.win(player, dice, player.previousPosition)
+        return GameResponse.WinResponse(player.name, player.previousPosition, player.position, dice)
     }
 }

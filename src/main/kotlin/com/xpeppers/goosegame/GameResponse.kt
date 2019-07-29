@@ -1,23 +1,13 @@
 package com.xpeppers.goosegame
 
-data class GameResponse(val message: String, val type: Type) {
-    enum class Type {
-        OK,
-        ALREADY_EXISTS,
-        NOT_FOUND
-    }
-
-    companion object {
-        fun ok(message: String): GameResponse {
-            return GameResponse(message, Type.OK)
-        }
-
-        fun alreadyExists(message: String): GameResponse {
-            return GameResponse(message, Type.ALREADY_EXISTS)
-        }
-
-        fun notFound(message: String): GameResponse {
-            return GameResponse(message, Type.NOT_FOUND)
-        }
-    }
+sealed class GameResponse {
+    data class PrankResponse(val name: String, val beginPosition: Int, val landPosition: Int, val dice: Dice, val other: Player): GameResponse()
+    data class GooseResponse(val name: String, val beginPosition: Int, val landPosition: Int, val dice: Dice, val moves: MutableList<Int>): GameResponse()
+    data class BridgeResponse(val name: String, val beginPosition: Int, val landPosition: Int, val dice: Dice): GameResponse()
+    data class WinResponse(val name: String, val beginPosition: Int, val landPosition: Int, val dice: Dice): GameResponse()
+    data class BounceResponse(val name: String, val beginPosition: Int, val landPosition: Int, val dice: Dice, val winSpace: Int): GameResponse()
+    data class NormalResponse(val name: String, val beginPosition: Int, val landPosition: Int, val dice: Dice): GameResponse()
+    data class AlreadyExistsResponse(val name: String): GameResponse()
+    data class PlayersResponse(val names: List<String>): GameResponse()
+    data class NotFoundResponse(val command: String): GameResponse()
 }

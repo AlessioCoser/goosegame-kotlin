@@ -1,12 +1,14 @@
 package com.xpeppers.goosegame
 
-class DefaultPolicy(private val printer: Printer): Policy {
+import com.xpeppers.goosegame.GameResponse.*
+
+class DefaultPolicy : Policy {
 
     override fun canExecute(player: Player): Boolean {
         return true
     }
 
     override fun execute(player: Player, dice: Dice): GameResponse {
-        return printer.movePlayer(player.name, dice, player.previousPosition, player.position)
+        return NormalResponse(player.name, player.previousPosition, player.position, dice)
     }
 }

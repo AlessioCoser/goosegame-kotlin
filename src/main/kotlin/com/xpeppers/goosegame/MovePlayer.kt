@@ -1,6 +1,6 @@
 package com.xpeppers.goosegame
 
-class MovePlayer(private val players: Players, private val diceRoller: DiceRoller, private val printer: Printer) : CommandHandler {
+class MovePlayer(private val players: Players, private val diceRoller: DiceRoller) : CommandHandler {
     override fun canHandle(command: Command): Boolean =
         command.type == Command.Type.MOVE_PLAYER
 
@@ -16,11 +16,11 @@ class MovePlayer(private val players: Players, private val diceRoller: DiceRolle
     }
 
     private fun policies() = listOf(
-        WinPolicy(printer),
-        BouncePolicy(printer, players),
-        BridgePolicy(printer, players),
-        TheGoosePolicy(printer, players),
-        PrankPolicy(printer, players),
-        DefaultPolicy(printer)
+        WinPolicy(),
+        BouncePolicy(players),
+        BridgePolicy(players),
+        TheGoosePolicy(players),
+        PrankPolicy(players),
+        DefaultPolicy()
     )
 }

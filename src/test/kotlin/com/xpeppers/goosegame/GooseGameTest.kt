@@ -2,6 +2,7 @@ package com.xpeppers.goosegame
 
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
+import com.xpeppers.goosegame.GameResponse.*
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
@@ -14,21 +15,21 @@ class GooseGameTest {
     @Before
     fun before() {
         diceRoller = mock()
-        game = GooseGame(InMemoryPlayers(), diceRoller, CliPrinter())
+        game = GooseGame(InMemoryPlayers(), diceRoller)
     }
 
     @Test
     fun `add first player`() {
         val response = game.run(Command.addPlayer("Pippo"))
 
-        assertThat(response.message, `is`("players: Pippo"))
+        assertThat(response as PlayersResponse, `is`(PlayersResponse(listOf("Pippo"))))
     }
 
     @Test
     fun `add a players with different name`() {
         val response = game.run(Command.addPlayer("Pluto"))
 
-        assertThat(response.message, `is`("players: Pluto"))
+        assertThat(response as PlayersResponse, `is`(PlayersResponse(listOf("Pluto"))))
     }
 
     @Test
@@ -37,7 +38,7 @@ class GooseGameTest {
 
         val response = game.run(Command.addPlayer("Pippo"))
 
-        assertThat(response.message, `is`("players: Pluto, Pippo"))
+        assertThat(response as PlayersResponse, `is`(PlayersResponse(listOf("Pluto", "Pippo"))))
     }
 
     @Test
@@ -46,7 +47,7 @@ class GooseGameTest {
 
         val response = game.run(Command.addPlayer("Pippo"))
 
-        assertThat(response.message, `is`("Pippo: already existing player"))
+        assertThat(response as AlreadyExistsResponse, `is`(AlreadyExistsResponse("Pippo")))
     }
 
     @Test
@@ -55,7 +56,7 @@ class GooseGameTest {
 
         val response = moveCommand("Pippo", Dice(4, 3))
 
-        assertThat(response.message, `is`("Pippo rolls 4, 3. Pippo moves from Start to 7"))
+        assertThat(response as NormalResponse, `is`(NormalResponse("Pippo", 0, 7, Dice(4, 3))))
     }
 
     @Test
@@ -64,7 +65,7 @@ class GooseGameTest {
 
         val response = moveCommand("Pluto", Dice(5, 6))
 
-        assertThat(response.message, `is`("Pluto rolls 5, 6. Pluto moves from Start to 11"))
+        assertThat(response as NormalResponse, `is`(NormalResponse("Pluto", 0, 11, Dice(5, 6))))
     }
 
     @Test
@@ -73,7 +74,7 @@ class GooseGameTest {
 
         val response = moveCommand("Pluto", Dice(1, 1), Dice(2, 3))
 
-        assertThat(response.message, `is`("Pluto rolls 2, 3. Pluto moves from 2 to 7"))
+        assertThat(response as NormalResponse, `is`(NormalResponse("Pluto", 2, 7, Dice(2, 3))))
     }
 
     @Test
@@ -82,7 +83,7 @@ class GooseGameTest {
 
         val response = moveCommand("Pluto", Dice(60, 3))
 
-        assertThat(response.message, `is`("Pluto rolls 60, 3. Pluto moves from Start to 63. Pluto Wins!!"))
+        assertThat(response as WinResponse, `is`(WinResponse("Pluto", 0, 63, Dice(60, 3))))
     }
 
     @Test
@@ -91,16 +92,7 @@ class GooseGameTest {
 
         val response = moveCommand("Pippo", Dice(60, 5))
 
-        assertThat(response.message, `is`("Pippo rolls 60, 5. Pippo moves from Start to 63. Pippo bounces! Pippo returns to 61"))
-    }
-
-    @Test
-    fun `game rolls dice autonomously`() {
-        addPlayers("Pippo", "Pluto")
-
-        val response = moveCommand("Pippo", Dice(1, 2))
-
-        assertThat(response.message, `is`("Pippo rolls 1, 2. Pippo moves from Start to 3"))
+        assertThat(response as BounceResponse, `is`(BounceResponse("Pippo", 0, 61, Dice(60, 5), 63)))
     }
 
     @Test
@@ -109,7 +101,7 @@ class GooseGameTest {
 
         val response = moveCommand("Pippo", Dice(2, 4))
 
-        assertThat(response.message, `is`("Pippo rolls 2, 4. Pippo moves from Start to The Bridge. Pippo jumps to 12"))
+        assertThat(response as BridgeResponse, `is`(BridgeResponse("Pippo", 0, 6, Dice(2, 4))))
     }
 
     @Test
@@ -118,7 +110,7 @@ class GooseGameTest {
 
         val response = moveCommand("Pippo", Dice(2, 4), Dice(1, 2))
 
-        assertThat(response.message, `is`("Pippo rolls 1, 2. Pippo moves from 12 to 15"))
+        assertThat(response as NormalResponse, `is`(NormalResponse("Pippo", 12, 15, Dice(1, 2))))
     }
 
     @Test
@@ -127,7 +119,7 @@ class GooseGameTest {
 
         val response = moveCommand("Pippo", Dice(2, 3))
 
-        assertThat(response.message, `is`("Pippo rolls 2, 3. Pippo moves from Start to 5, The Goose. Pippo moves again and goes to 10"))
+        assertThat(response as GooseResponse, `is`(GooseResponse("Pippo", 0, 5, Dice(2, 3), mutableListOf(10))))
     }
 
     @Test
@@ -136,7 +128,7 @@ class GooseGameTest {
 
         val response = moveCommand("Pippo", Dice(2, 3), Dice(1, 1))
 
-        assertThat(response.message, `is`("Pippo rolls 1, 1. Pippo moves from 10 to 12"))
+        assertThat(response as NormalResponse, `is`(NormalResponse("Pippo", 10, 12, Dice(1, 1))))
     }
 
     @Test
@@ -145,7 +137,7 @@ class GooseGameTest {
 
         val response = moveCommand("Pippo", Dice(5, 5), Dice(2, 2))
 
-        assertThat(response.message, `is`("Pippo rolls 2, 2. Pippo moves from 10 to 14, The Goose. Pippo moves again and goes to 18, The Goose. Pippo moves again and goes to 22"))
+        assertThat(response as GooseResponse, `is`(GooseResponse("Pippo", 10, 14, Dice(2, 2), mutableListOf(18, 22))))
     }
 
     @Test
@@ -155,12 +147,13 @@ class GooseGameTest {
         moveCommand("Pluto", Dice(5, 3))
         val response = moveCommand("Pippo", Dice(4, 4))
 
-        assertThat(response.message, `is`("Pippo rolls 4, 4. Pippo moves from Start to 8. On 8 there is Pluto, who returns to Start"))
+
+        assertThat(response as PrankResponse, `is`(PrankResponse("Pippo", 0, 8, Dice(4, 4), Player("Pluto").apply { position = 0; previousPosition = 8 })))
     }
 
     @Test
     fun `when command not found print error`() {
-        assertThat(game.run(Command.notFound()).message, `is`("Error: command not found"))
+        assertThat(game.run(Command.notFound()) as NotFoundResponse, `is`(NotFoundResponse("")))
     }
 
     private fun addPlayers(vararg names: String): GooseGame {

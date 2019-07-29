@@ -1,10 +1,11 @@
 package com.xpeppers.goosegame
 
+import com.xpeppers.goosegame.GameResponse.*
 import spark.Spark.*
 
 class HttpGooseGame(private val httpPort: Int, private val players: InMemoryPlayers, private val diceRoller: DiceRoller, private val printer: Printer): GameRunner {
     override fun start(): GameRunner {
-        val game = GooseGame(players, diceRoller, printer)
+        val game = GooseGame(players, diceRoller)
 
         port(httpPort)
 
@@ -12,7 +13,7 @@ class HttpGooseGame(private val httpPort: Int, private val players: InMemoryPlay
             response.type("application/json")
 
             val gameResponse = game.run(HttpParser(request).parse())
-            halt(statusFor(gameResponse), gameResponse.message)
+            halt(statusFor(gameResponse), printer.print(gameResponse))
         }
 
         awaitInitialization()
@@ -24,9 +25,15 @@ class HttpGooseGame(private val httpPort: Int, private val players: InMemoryPlay
         awaitStop()
     }
 
-    private fun statusFor(gameResponse: GameResponse) = when (gameResponse.type) {
-        GameResponse.Type.OK -> 200
-        GameResponse.Type.ALREADY_EXISTS -> 409
-        GameResponse.Type.NOT_FOUND -> 404
+    private fun statusFor(gameResponse: GameResponse) = when (gameResponse) {
+        is PrankResponse -> 200
+        is GooseResponse -> 200
+        is BridgeResponse -> 200
+        is WinResponse -> 200
+        is BounceResponse -> 200
+        is NormalResponse -> 200
+        is AlreadyExistsResponse -> 409
+        is PlayersResponse -> 200
+        is NotFoundResponse -> 404
     }
 }

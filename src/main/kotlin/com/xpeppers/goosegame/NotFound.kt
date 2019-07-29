@@ -1,6 +1,6 @@
 package com.xpeppers.goosegame
 
-class NotFound(private val printer: Printer): CommandHandler {
+class NotFound : CommandHandler {
     override fun canHandle(command: Command): Boolean = true
-    override fun handle(command: Command): GameResponse = printer.notFound()
+    override fun handle(command: Command) = GameResponse.NotFoundResponse("")
 }

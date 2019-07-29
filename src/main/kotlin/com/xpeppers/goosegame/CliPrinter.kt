@@ -1,34 +1,31 @@
 package com.xpeppers.goosegame
 
+import com.xpeppers.goosegame.GameResponse.*
+
 class CliPrinter: Printer {
-
-    override fun prank(name: String, beginPosition: Int, landPosition: Int, dice: Dice, other: Player) =
-        GameResponse.ok(move(name, dice, beginPosition, landPosition) +
-                ". On ${printPosition(other.previousPosition)} there is ${other.name}, who returns to ${printPosition(other.position)}")
-
-    override fun theGoose(name: String, beginPosition: Int, landPosition: Int, dice: Dice, moves: MutableList<Int>) =
-        GameResponse.ok(move(name, dice, beginPosition, landPosition) +
-                moves.joinToString("") { move -> ", The Goose. $name moves again and goes to ${printPosition(move)}" })
-
-    override fun bridge(player: Player, dice: Dice, previousPosition: Int, bridgeSpace: Int) =
-        GameResponse.ok(move(player.name, dice, previousPosition, bridgeSpace) +
-                ". ${player.name} jumps to 12")
-
-    override fun win(player: Player, dice: Dice, previousPosition: Int) =
-        GameResponse.ok(move(player.name, dice, previousPosition, player.position) +
-                ". ${player.name} Wins!!")
-
-    override fun bounce(player: Player, dice: Dice, previousPosition: Int, winSpace: Int) =
-        GameResponse.ok(move(player.name, dice, previousPosition, winSpace) + ". ${player.name} bounces! ${player.name} returns to ${player.position}")
-
-    override fun movePlayer(name: String, dice: Dice, previousPosition: Int, newPosition: Int) =
-        GameResponse.ok(move(name, dice, previousPosition, newPosition))
-
-    override fun playerAlreadyExists(playerName: String) = GameResponse.ok("$playerName: already existing player")
-
-    override fun players(names: List<String>) = GameResponse.ok("players: " + names.joinToString(", "))
-
-    override fun notFound() = GameResponse.ok("Error: command not found")
+    override fun print(response: GameResponse): String = when(response) {
+        is PrankResponse ->
+            move(response.name, response.dice, response.beginPosition, response.landPosition) +
+            ". On ${printPosition(response.other.previousPosition)} there is ${response.other.name}, who returns to ${printPosition(response.other.position)}\n"
+        is GooseResponse ->
+            move(response.name, response.dice, response.beginPosition, response.landPosition) +
+            response.moves.joinToString("") { move -> ", The Goose. ${response.name} moves again and goes to ${printPosition(move)}" } + "\n"
+        is BridgeResponse ->
+            move(response.name, response.dice, response.beginPosition, response.landPosition) + ". ${response.name} jumps to 12\n"
+        is WinResponse ->
+            move(response.name, response.dice, response.beginPosition, response.landPosition) + ". ${response.name} Wins!!\n"
+        is BounceResponse ->
+            move(response.name, response.dice, response.beginPosition, response.winSpace) +
+            ". ${response.name} bounces! ${response.name} returns to ${response.landPosition}\n"
+        is NormalResponse ->
+            move(response.name, response.dice, response.beginPosition, response.landPosition) + "\n"
+        is AlreadyExistsResponse ->
+            "${response.name}: already existing player\n"
+        is PlayersResponse ->
+            "players: " + response.names.joinToString(", ") + "\n"
+        is NotFoundResponse ->
+            "Error: command not found\n"
+    }
 
     private fun move(name: String, dice: Dice, previousPosition: Int, newPosition: Int) =
         "$name rolls ${dice.first}, ${dice.second}. $name moves from ${printPosition(previousPosition)} to ${printPosition(newPosition)}"
