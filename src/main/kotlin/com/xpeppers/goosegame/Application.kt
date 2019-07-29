@@ -5,8 +5,8 @@ fun main() {
     val diceRoller = RealDiceRoller()
 
     listOf(
-        HttpGooseGame(3000, players, diceRoller, HttpPrinter()),
-        CliGooseGame(players, diceRoller, CliPrinter())
+        HttpGooseGame(3000, players, diceRoller),
+        CliGooseGame(players, diceRoller)
     ).forEach {
         it.start()
     }

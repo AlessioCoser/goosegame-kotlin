@@ -1,6 +1,10 @@
-package com.xpeppers.goosegame
+package com.xpeppers.goosegame.handlers
 
-class MovePlayer(private val players: Players, private val diceRoller: DiceRoller) : CommandHandler {
+import com.xpeppers.goosegame.*
+import com.xpeppers.goosegame.policies.*
+
+class MovePlayer(private val players: Players, private val diceRoller: DiceRoller) :
+    CommandHandler {
     override fun canHandle(command: Command): Boolean =
         command.type == Command.Type.MOVE_PLAYER
 

@@ -1,9 +1,10 @@
 package com.xpeppers.goosegame
 
-class CliGooseGame(val players: Players, val diceRoller: RealDiceRoller, val printer: CliPrinter): GameRunner {
+class CliGooseGame(val players: Players, val diceRoller: RealDiceRoller): GameRunner {
     private var running = true
 
     override fun start(): GameRunner {
+        val printer = CliPrinter()
         val game = GooseGame(players, diceRoller)
 
         while (running) {

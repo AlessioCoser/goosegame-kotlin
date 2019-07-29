@@ -1,6 +1,9 @@
-package com.xpeppers.goosegame
+package com.xpeppers.goosegame.handlers
 
+import com.xpeppers.goosegame.Command
+import com.xpeppers.goosegame.GameResponse
 import com.xpeppers.goosegame.GameResponse.*
+import com.xpeppers.goosegame.Players
 
 class AddPlayer(private val players: Players): CommandHandler {
 

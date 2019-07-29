@@ -1,5 +1,6 @@
-package com.xpeppers.goosegame
+package com.xpeppers.goosegame.policies
 
+import com.xpeppers.goosegame.*
 import com.xpeppers.goosegame.GameResponse.*
 
 class BouncePolicy(private val players: Players): Policy {

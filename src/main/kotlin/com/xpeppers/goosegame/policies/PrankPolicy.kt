@@ -1,4 +1,9 @@
-package com.xpeppers.goosegame
+package com.xpeppers.goosegame.policies
+
+import com.xpeppers.goosegame.Dice
+import com.xpeppers.goosegame.GameResponse
+import com.xpeppers.goosegame.Player
+import com.xpeppers.goosegame.Players
 
 class PrankPolicy(private val players: Players) : Policy {
     override fun canExecute(player: Player): Boolean {
@@ -10,6 +15,12 @@ class PrankPolicy(private val players: Players) : Policy {
 
         players.updatePosition(other, player.previousPosition)
 
-        return GameResponse.PrankResponse(player.name, player.previousPosition, player.position, dice, other)
+        return GameResponse.PrankResponse(
+            player.name,
+            player.previousPosition,
+            player.position,
+            dice,
+            other
+        )
     }
 }
