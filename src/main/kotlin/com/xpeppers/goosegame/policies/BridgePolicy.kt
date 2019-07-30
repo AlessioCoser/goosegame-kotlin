@@ -3,7 +3,7 @@ package com.xpeppers.goosegame.policies
 import com.xpeppers.goosegame.*
 import com.xpeppers.goosegame.GameResponse.*
 
-class BridgePolicy(val players: Players): Policy {
+class BridgePolicy(private val players: Players): Policy {
     private val bridgeSpace = 6
     private val jumpTo = 12
 

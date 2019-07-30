@@ -1,6 +1,6 @@
 package com.xpeppers.goosegame
 
-class CliGooseGame(val players: Players, val diceRoller: RealDiceRoller): GameRunner {
+class CliGooseGame(private val players: Players, private val diceRoller: RealDiceRoller): GameRunner {
     private var running = true
 
     override fun start(): GameRunner {
