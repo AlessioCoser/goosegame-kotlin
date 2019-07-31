@@ -3,10 +3,8 @@ package com.xpeppers.goosegame
 import com.xpeppers.goosegame.GameResponse.*
 import spark.Spark.*
 
-class HttpGooseGame(private val httpPort: Int, private val players: InMemoryPlayers, private val diceRoller: DiceRoller): GameRunner {
+class HttpGooseGame(private val httpPort: Int, private val game: GooseGame): GameRunner {
     override fun start(): GameRunner {
-        val game = GooseGame(players, diceRoller)
-
         port(httpPort)
 
         before("*") { request, response ->

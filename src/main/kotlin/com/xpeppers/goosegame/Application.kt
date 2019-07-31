@@ -1,12 +1,11 @@
 package com.xpeppers.goosegame
 
 fun main() {
-    val players = InMemoryPlayers()
-    val diceRoller = RealDiceRoller()
+    val game = GooseGame(InMemoryPlayers(), RealDiceRoller())
 
     listOf(
-        HttpGooseGame(3000, players, diceRoller),
-        CliGooseGame(players, diceRoller)
+        HttpGooseGame(3000, game),
+        CliGooseGame(game)
     ).forEach {
         it.start()
     }

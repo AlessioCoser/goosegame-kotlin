@@ -16,7 +16,8 @@ class HttpGooseGameTest {
     @Before
     fun setUp() {
         diceRoller = mock()
-        game = HttpGooseGame(port, InMemoryPlayers(), diceRoller).start()
+        val players = InMemoryPlayers()
+        game = HttpGooseGame(port, GooseGame(players, diceRoller)).start()
     }
 
     @After
